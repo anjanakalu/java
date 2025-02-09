@@ -1,4 +1,60 @@
-Here is a well-organized version of your content, categorized into **JavaScript** and **CSS** sections, with problems arranged in order of increasing complexity. I've also included alternative solutions where requested, and skipped React-specific coding as per your request.
+## **JavaScript Questions**
+
+1. Flatten an Array
+2. Throttle a Function
+3. Check if Two Arrays Are Equal
+4. Count Occurrences of Each Word in a String
+5. Generate a Random Integer Between Two Numbers
+6. Reverse a String
+7. Check if a String is a Palindrome
+8. Remove Duplicate Elements from an Array
+9. Sort an Array Without Using `sort`
+10. Check if a Number is Prime
+11. Generate Fibonacci Series
+12. Check if an Object is Empty
+13. Convert a String to Title Case
+14. Factorial of a Number
+15. Find the Intersection of Two Arrays
+16. Check if Two Strings Are Anagrams
+17. Calculate the nth Power of a Number
+18. Find the Longest Word in a Sentence
+19. Shuffle the Elements of an Array
+20. Merge Two Sorted Arrays
+21. Find the Second Largest Number in an Array
+22. Check if Two Arrays Have the Same Elements (Order Doesn’t Matter)
+23. Flatten a Nested Object
+24. Group Anagrams in an Array
+25. Implement Debounce
+26. Convert a String to Camel Case
+27. Rotate an Array by `k` Steps
+28. Find All Subsets of an Array
+29. Check if a Binary Tree is Balanced
+30. Implement a Promise-Based Delay Function
+31. Count the Frequency of Characters in a String
+32. Check if a String Contains Only Unique Characters
+33. Find the Missing Number in an Array
+34. Implement a Simple Pub/Sub System
+35. Validate a Parentheses String
+36. Find the Intersection of Two Arrays with Duplicates
+37. Check if a Number is a Power of Two
+38. Reverse Words in a Sentence Without Reversing Characters
+39. Find the First Non-Repeating Character in a String
+40. Implement a Custom `reduce` Function
+
+---
+
+## **CSS Questions**
+
+1. Center a `div` in CSS
+2. Implement Flexbox and Grid
+3. Session Storage vs Local Storage
+4. Token-Based Authentication
+5. DOM Selection
+6. Nested Destructuring
+7. Deep Clone a Nested Object
+8. Closures
+9. Custom Event Emitter
+10. Fetch Data from an API
 
 ---
 
@@ -378,6 +434,369 @@ function mergeSortedArraysConcat(arr1, arr2) {
 
 ---
 
+### **21. Find the Second Largest Number in an Array**
+```javascript
+// Using sorting
+function secondLargest(arr) {
+    const sorted = [...new Set(arr)].sort((a, b) => b - a);
+    return sorted[1];
+}
+
+// Without sorting
+function secondLargestNoSort(arr) {
+    let first = -Infinity, second = -Infinity;
+    for (let num of arr) {
+        if (num > first) {
+            second = first;
+            first = num;
+        } else if (num > second && num !== first) {
+            second = num;
+        }
+    }
+    return second;
+}
+```
+
+---
+
+### **22. Check if Two Arrays Have the Same Elements (Order Doesn’t Matter)**
+```javascript
+// Using sort
+function areArraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    return arr1.sort().join('') === arr2.sort().join('');
+}
+
+// Using frequency map
+function areArraysEqualMap(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    const freq = {};
+    for (let num of arr1) freq[num] = (freq[num] || 0) + 1;
+    for (let num of arr2) {
+        if (!freq[num]) return false;
+        freq[num]--;
+    }
+    return true;
+}
+```
+
+---
+
+### **23. Flatten a Nested Object**
+```javascript
+function flattenObject(obj, parentKey = '', result = {}) {
+    for (let key in obj) {
+        const newKey = parentKey ? `${parentKey}.${key}` : key;
+        if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+            flattenObject(obj[key], newKey, result);
+        } else {
+            result[newKey] = obj[key];
+        }
+    }
+    return result;
+}
+
+const nestedObj = { a: 1, b: { c: 2, d: { e: 3 } } };
+console.log(flattenObject(nestedObj));
+// Output: { "a": 1, "b.c": 2, "b.d.e": 3 }
+```
+
+---
+
+### **24. Group Anagrams in an Array**
+```javascript
+function groupAnagrams(strs) {
+    const map = new Map();
+    for (let str of strs) {
+        const sorted = str.split('').sort().join('');
+        if (!map.has(sorted)) map.set(sorted, []);
+        map.get(sorted).push(str);
+    }
+    return Array.from(map.values());
+}
+
+console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+// Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+```
+
+---
+
+### **25. Implement Debounce**
+```javascript
+function debounce(fn, delay) {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
+```
+
+---
+
+### **26. Convert a String to Camel Case**
+```javascript
+function toCamelCase(str) {
+    return str
+        .split(/[-_]/)
+        .map((word, index) =>
+            index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+        )
+        .join('');
+}
+
+console.log(toCamelCase("hello-world-example")); // Output: "helloWorldExample"
+```
+
+---
+
+### **27. Rotate an Array by `k` Steps**
+```javascript
+function rotateArray(arr, k) {
+    const n = arr.length;
+    k = k % n; // Handle cases where k > n
+    return arr.slice(-k).concat(arr.slice(0, n - k));
+}
+
+console.log(rotateArray([1, 2, 3, 4, 5], 2)); // Output: [4, 5, 1, 2, 3]
+```
+
+---
+
+### **28. Find All Subsets of an Array**
+```javascript
+function subsets(nums) {
+    const result = [[]];
+    for (let num of nums) {
+        const newSubsets = result.map(subset => [...subset, num]);
+        result.push(...newSubsets);
+    }
+    return result;
+}
+
+console.log(subsets([1, 2]));
+// Output: [[], [1], [2], [1, 2]]
+```
+
+---
+
+### **29. Check if a Binary Tree is Balanced**
+```javascript
+class TreeNode {
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+function isBalanced(root) {
+    function getHeight(node) {
+        if (!node) return 0;
+        const leftHeight = getHeight(node.left);
+        const rightHeight = getHeight(node.right);
+        if (leftHeight === -1 || rightHeight === -1 || Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        }
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+    return getHeight(root) !== -1;
+}
+```
+
+---
+
+### **30. Implement a Promise-Based Delay Function**
+```javascript
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function example() {
+    console.log("Start");
+    await delay(2000);
+    console.log("End after 2 seconds");
+}
+example();
+```
+
+---
+
+### **31. Count the Frequency of Characters in a String**
+```javascript
+function charFrequency(str) {
+    const freq = {};
+    for (let char of str) {
+        freq[char] = (freq[char] || 0) + 1;
+    }
+    return freq;
+}
+
+console.log(charFrequency("hello"));
+// Output: { h: 1, e: 1, l: 2, o: 1 }
+```
+
+---
+
+### **32. Check if a String Contains Only Unique Characters**
+```javascript
+// Using Set
+function hasUniqueChars(str) {
+    return new Set(str).size === str.length;
+}
+
+// Without Set
+function hasUniqueCharsNoSet(str) {
+    for (let i = 0; i < str.length; i++) {
+        for (let j = i + 1; j < str.length; j++) {
+            if (str[i] === str[j]) return false;
+        }
+    }
+    return true;
+}
+```
+
+---
+
+### **33. Find the Missing Number in an Array**
+```javascript
+function findMissingNumber(arr) {
+    const n = arr.length + 1;
+    const total = (n * (n + 1)) / 2;
+    const sum = arr.reduce((acc, num) => acc + num, 0);
+    return total - sum;
+}
+
+console.log(findMissingNumber([1, 2, 4, 5])); // Output: 3
+```
+
+---
+
+### **34. Implement a Simple Pub/Sub System**
+```javascript
+class PubSub {
+    constructor() {
+        this.subscribers = {};
+    }
+
+    subscribe(event, callback) {
+        if (!this.subscribers[event]) this.subscribers[event] = [];
+        this.subscribers[event].push(callback);
+    }
+
+    publish(event, data) {
+        if (this.subscribers[event]) {
+            this.subscribers[event].forEach(callback => callback(data));
+        }
+    }
+
+    unsubscribe(event, callback) {
+        if (this.subscribers[event]) {
+            this.subscribers[event] = this.subscribers[event].filter(cb => cb !== callback);
+        }
+    }
+}
+```
+
+---
+
+### **35. Validate a Parentheses String**
+```javascript
+function isValidParentheses(str) {
+    const stack = [];
+    const map = { '(': ')', '[': ']', '{': '}' };
+    for (let char of str) {
+        if (map[char]) {
+            stack.push(char);
+        } else {
+            const top = stack.pop();
+            if (map[top] !== char) return false;
+        }
+    }
+    return stack.length === 0;
+}
+
+console.log(isValidParentheses("()[]{}")); // Output: true
+console.log(isValidParentheses("(]")); // Output: false
+```
+
+---
+
+### **36. Find the Intersection of Two Arrays with Duplicates**
+```javascript
+function arrayIntersectionWithDuplicates(arr1, arr2) {
+    const freq = {};
+    const result = [];
+    for (let num of arr1) freq[num] = (freq[num] || 0) + 1;
+    for (let num of arr2) {
+        if (freq[num] > 0) {
+            result.push(num);
+            freq[num]--;
+        }
+    }
+    return result;
+}
+
+console.log(arrayIntersectionWithDuplicates([1, 2, 2, 1], [2, 2])); // Output: [2, 2]
+```
+
+---
+
+### **37. Check if a Number is a Power of Two**
+```javascript
+function isPowerOfTwo(n) {
+    if (n <= 0) return false;
+    return (n & (n - 1)) === 0;
+}
+
+console.log(isPowerOfTwo(8)); // Output: true
+console.log(isPowerOfTwo(10)); // Output: false
+```
+
+---
+
+### **38. Reverse Words in a Sentence Without Reversing Characters**
+```javascript
+function reverseWordsInSentence(str) {
+    return str.split(' ').reverse().join(' ');
+}
+
+console.log(reverseWordsInSentence("This is JavaScript")); // Output: "JavaScript is This"
+```
+
+---
+
+### **39. Find the First Non-Repeating Character in a String**
+```javascript
+function firstNonRepeatingChar(str) {
+    const freq = {};
+    for (let char of str) freq[char] = (freq[char] || 0) + 1;
+    for (let char of str) {
+        if (freq[char] === 1) return char;
+    }
+    return null;
+}
+
+console.log(firstNonRepeatingChar("swiss")); // Output: "w"
+```
+
+---
+
+### **40. Implement a Custom `reduce` Function**
+```javascript
+function customReduce(arr, callback, initialValue) {
+    let accumulator = initialValue !== undefined ? initialValue : arr[0];
+    for (let i = initialValue !== undefined ? 0 : 1; i < arr.length; i++) {
+        accumulator = callback(accumulator, arr[i], i, arr);
+    }
+    return accumulator;
+}
+
+console.log(customReduce([1, 2, 3], (acc, curr) => acc + curr, 0)); // Output: 6
+```
+
+---
+
 ## **CSS Solutions**
 
 ### **1. Center a `div` in CSS**
@@ -574,4 +993,4 @@ fetchData('https://api.example.com/data');
 
 ---
 
-This organized structure should make it easier to navigate and understand the solutions. Let me know if you need further refinements!
+This comprehensive structure ensures clarity and ease of navigation. Let me know if you need further refinements!
