@@ -35,7 +35,15 @@
 ---
 
 ### **Object Manipulation** ✅
-
+```
+let students = [
+    { name: "Alice Johnson", age: 22, grade: "A", city: "New York" },
+    { name: "Bob Smith", age: 24, grade: "B", city: "Los Angeles" },
+    { name: "Charlie Brown", age: 21, grade: "A-", city: "Chicago" },
+    { name: "David Williams", age: 23, grade: "B+", city: "Houston" },
+    { name: "Emma Davis", age: 20, grade: "A+", city: "San Francisco" }
+];
+```
 1. Function ES6 Method Syntax (For Object Methods).  
 2. Loop Over an Object and Get All Key-Value Pairs.  
    - **For...in Loop:** Loops through the keys of the object.  
@@ -45,7 +53,7 @@
 3. Use Object.assign() to Clone an Object. (Input: { name: 'Riya' }, Output: { name: 'Riya', age: 21 })  
 4. Add a Property to an Object Dynamically. (Input: { name: 'Riya' }, Output: { name: 'Riya', age: 21 })  
 5. Delete a Property from an Object. (Input: { name: 'Riya', age: 21 }, Output: { name: 'Riya' })  
-
+6. Apply Sort, filter object based on grade and name includes "Brown"
 
 ---
 
