@@ -5,7 +5,7 @@
 
 1. Count Vowels in a String. (Input: "hello geek", Output: 4)  
 2. Reverse a String Without Using the Reverse Method (Using a For Loop). (Input: "GeeksForGeeks", Output: "skeeGroFskeeG")  ✅
-3. Check if a String Contains Another String in JavaScript. (Input: 'GeeksForGeeks', 'For', Output: true)  
+3. Check if a String Contains Another String in JavaScript. (Input: 'GeeksForGeeks', 'For', Output: true)  [*indexOf, includes]
 4. Sort an Array of Strings in Ascending or Descending Order. (Input: ["banana", "apple", "cherry"], Output (Ascending): ["apple", "banana", "cherry"], Output (Descending): ["cherry", "banana", "apple"])  
 5. Write a Program to Reverse a String in JavaScript. (Input: "GeeksForGeeks", Output: "skeeGroFskeeG")  
 6. Write a Program to Reverse a sentence in JavaScript. (Input: "i like GeeksForGeeks", Output: "skeeGroFskeeG ekil i")  ✅
