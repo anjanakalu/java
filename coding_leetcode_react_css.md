@@ -107,41 +107,51 @@
 
 6. **Convert array to object:**  
    Input: `[6, 7, 8]` → Output: `{1: "6", 2: "7", 3: "8"}`
+   ```javascript
+   const employees = [
+    { name: 'John', age: 30, city: 'New York', position: 'Developer' },
+    { name: 'Emma', age: 25, city: 'Los Angeles', position: 'Analyst' },
+    { name: 'Oliver', age: 28, city: 'Chicago', position: 'Architect' },
+    { name: 'Sophia', age: 35, city: 'San Francisco', position: 'Manager' },
+    { name: 'Liam', age: 27, city: 'Austin', position: 'Developer' },
+    { name: 'Ava', age: 32, city: 'Detroit', position: 'Developer' },
+];
+   ```
 
-7. **Group employees by position:**  
+8. **Group employees by position:**  
    Input: Employees array → Output: `{ Developer: [{...}, {...}, {...}], Analyst: [{...}], Architect: [{...}], Manager: [{...}] }`
 
-8. **Sort employees by position and age:**  
+9. **Sort employees by position and age:**  
    Input: Employees array → Output: Sorted array by position and age.
 
-9. **Filter employees with age greater than 28 and sort them by age:**  
+10. **Filter employees with age greater than 28 and sort them by age:**  
    Input: Employees array → Output: Filtered and sorted array of employees aged > 28.
 
-10. **Find all developers:**  
+11. **Find all developers:**  
     Input: Employees array → Output: `[ { name: 'John', ... }, { name: 'Liam', ... }, { name: 'Ava', ... } ]`
 
-11. **Count employees by position:**  
+12. **Count employees by position:**  
     Input: Employees array → Output: `{ Developer: 3, Analyst: 1, Architect: 1, Manager: 1 }`
 
-12. **Add a new property "salary" to each employee dynamically:**  
+13. **Add a new property "salary" to each employee dynamically:**  
     Input: Employees array → Output: Updated array with `salary` property added to each object.
 
-13. **Delete the "city" property from all employees:**  
+14. **Delete the "city" property from all employees:**  
     Input: Employees array → Output: Updated array without the `city` property.
 
-14. **Find employees whose names start with a specific letter:**  
+15. **Find employees whose names start with a specific letter:**  
     Input: Employees array, `"A"` → Output: `[ { name: 'Ava', age: 32, city: 'Detroit', position: 'Developer' } ]`
 
-15. **Calculate the average age of employees:**  
+16. **Calculate the average age of employees:**  
     Input: Employees array → Output: `29.5`
 
-16. **Convert employees array into an object indexed by id:**  
+17. **Convert employees array into an object indexed by id:**  
     Input: Employees array → Output: `{ 1: { name: 'John', ... }, 2: { name: 'Emma', ... }, ... }`
 
-17. **Deep clone the employees array:**  
+18. **Deep clone the employees array:**  
     Input: Employees array → Output: A deep-cloned copy of the array.
 
-18. **Replace the name of employees whose id is 3 to Anjana Kali:**  
+19. **Replace the name of employees whose id is 3 to Anjana Kali:**  
     Input: Employees array → Output: Updated array with the name of the employee with `id: 3` replaced.
 
 ---
@@ -237,6 +247,4 @@
 4. flex, grid and float
 
 ---
- Output:
- 1 splice (-2,3) and slice()
- 2. settimeout var
+
