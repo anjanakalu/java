@@ -270,13 +270,13 @@ const employees = [
 
 ### **React Implementation**
 
-1. HOC (Higher-Order Component).
-2. `useRef` (Persist value between renders, focus input field).
-3. Form event handling.
-4. Redirect to details page.
-5. Create a list of items.
-6. Implement form validation and submission.
-7. Implement fetch with custom headers.
+1. Implement fetch with custom headers. (**url: 'https://randomuser.me/api/'**)
+2. HOC (Higher-Order Component).
+3. `useRef` (Persist value between renders, focus input field).
+4. Form event handling.
+5. Redirect to details page.
+6. Create a list of items.
+7. Implement form validation and submission.
 8. Implement todo app functionality.
 
 ---
