@@ -1,4 +1,3 @@
-
 ### **Easy Questions**
 1. **Find frequency:**  
    Input: `[1, 1, 2, 3, 3, 4]` → Output: `{ '1': 2, '2': 1, '3': 2, '4': 1 }`
@@ -15,14 +14,14 @@
 5. **Reverse a string:**  
    Input: `"hello"` → Output: `"olleh"`
 
-6. **First letter of string uppercase:**  
+6. **First letter of string uppercase:**   
    Input: `"hey whats up"` → Output: `"Hey Whats Up"`
 
 7. **Check if an object is empty:**  
    Input: `{}` → Output: `true`
 
 8. **Find uppercase string index:**  
-   Input: `"HellaBellA"` → Output: `[0, 5, 10]`
+   Input: `"He llaBellA"` → Output: `[0, 5, 10]`
 
 9. **Rotate an array by K:**  
    Input: `[2, 3, 4, -5, 6, 2, 0, 9], 3` → Output: `[2, 0, 9, 2, 3, 4, -5, 6]`
@@ -34,7 +33,7 @@
     Input: `let str1 = "listen"; let str2 = "silent";` → Output: `true`
 
 11. **Check array anagram:**  
-    Input: `const arr1 = ['eat', 'go', 'read']; const arr2 = ['tea', 'read', 'go'];` → Output: `true`
+    Input: `const arr1 = ['eat', 'go', 're ad']; const arr2 = ['tea', 'read', 'go'];` → Output: `true`
 
 12. **Find count of substring G or eek repeated in "GeeksForGeeks":**  
     Input: `"GeeksForGeeks"` → Output: `G = 2, eek = 2`
@@ -60,9 +59,7 @@
 18. **Find indices of numbers whose target is 30:**  
     Input: `[10, 20, 30]` → Output: `[0, 1]`
 
-19. **Create a promise that resolves after 1 second and convert it to async/await.**
-
-20. **Calculate factorial of a number using recursion:**  
+20. **Calculate factorial of a number using recursion:**   
     Input: `4` → Output: `24`
 
 21. **Find maximum difference between two numbers in an array:**  
@@ -81,7 +78,7 @@
     Input: `17` → Output: `true`
 
 27. **Generate Fibonacci sequence up to N numbers:**  
-    Input: `7` → Output: `[0, 1, 1, 2, 3, 5, 8]`
+    Input: `7` → Output: `[ 0, 1, 1, 2, 3, 5, 8]`
 
 28. **Check if a string is a Palindrome:**  
     Input: `"madam"` → Output: `true`
@@ -107,8 +104,9 @@
 
 6. **Convert array to object:**  
    Input: `[6, 7, 8]` → Output: `{1: "6", 2: "7", 3: "8"}`
-   ```javascript
-   const employees = [
+
+```javascript
+const employees = [
     { name: 'John', age: 30, city: 'New York', position: 'Developer' },
     { name: 'Emma', age: 25, city: 'Los Angeles', position: 'Analyst' },
     { name: 'Oliver', age: 28, city: 'Chicago', position: 'Architect' },
@@ -116,7 +114,7 @@
     { name: 'Liam', age: 27, city: 'Austin', position: 'Developer' },
     { name: 'Ava', age: 32, city: 'Detroit', position: 'Developer' },
 ];
-   ```
+```
 
 8. **Group employees by position:**  
    Input: Employees array → Output: `{ Developer: [{...}, {...}, {...}], Analyst: [{...}], Architect: [{...}], Manager: [{...}] }`
@@ -125,7 +123,7 @@
    Input: Employees array → Output: Sorted array by position and age.
 
 10. **Filter employees with age greater than 28 and sort them by age:**  
-   Input: Employees array → Output: Filtered and sorted array of employees aged > 28.
+    Input: Employees array → Output: Filtered and sorted array of employees aged > 28.
 
 11. **Find all developers:**  
     Input: Employees array → Output: `[ { name: 'John', ... }, { name: 'Liam', ... }, { name: 'Ava', ... } ]`
@@ -155,59 +153,105 @@
     Input: Employees array → Output: Updated array with the name of the employee with `id: 3` replaced.
 
 ---
-### **Leet Code Problems**
 
-1. **Reverse String**: Write a function that reverses a string.  
-   **Input**: `s = "hello"` **Output**: `"olleh"`
+### **Promise-Based Questions**
 
-2. **Move Zeroes**: Given an array `nums`, move all `0`s to the end without changing the relative order of the non-zero elements.  
-   **Input**: `nums = [0, 1, 0, 3, 12]` **Output**: `[1, 3, 12, 0, 0]`
+1. Implement `Promise.all` function and all methods: `Promise.isSettled`, `Promise.any`, and `Promise.race`.
+2. Create a promise that resolves after 1 second.
+3. **Add Two Promises**  
+   Input: `promise1 = Promise.resolve(2), promise2 = Promise.resolve(3)` → Output: `5`
+4. **Convert Promise wrapped with settimeout to async/await.**
 
-3. **Best Time to Buy and Sell Stock**: Given an array `prices`, find the maximum profit from a single buy and sell.  
-   **Input**: `prices = [7, 1, 5, 3, 6, 4]` **Output**: `5`
-
-4. **Contains Duplicate**: Given an integer array `nums`, return `true` if any value appears at least twice in the array, and `false` if every element is distinct.  
-   **Input**: `nums = [1, 2, 3, 1]` **Output**: `true`
-
-5. **Generate Parentheses**: Given `n` pairs of parentheses, write a function to generate all combinations of well-formed parentheses.  
-   **Input**: `n = 3` **Output**: `["((()))","(()())","(())()","()(())","()()()"]`
-
-6. **Sort Colors**: Given an array `nums` with values `0`, `1`, and `2` representing red, white, and blue respectively, sort them in-place.  
-   **Input**: `nums = [2, 0, 2, 1, 1, 0]` **Output**: `[0, 0, 1, 1, 2, 2]`
-
-7. **Add Strings**: Given two non-negative integers `num1` and `num2` represented as strings, return the sum of `num1` and `num2` as a string.  
-   **Input**: `num1 = "11", num2 = "123"` **Output**: `"134"`
-
-8. **Third Maximum Number**: Given an integer array `nums`, return the third distinct maximum number in this array.  
-   **Input**: `nums = [3, 2, 1]` **Output**: `1`
-
-9. **Rotate Array**: Given an integer array `nums`, rotate the array to the right by `k` steps.  
-   **Input**: `nums = [1, 2, 3, 4, 5, 6, 7], k = 3` **Output**: `[5, 6, 7, 1, 2, 3, 4]`
-
-10. **Longest Increasing Subsequence**: Given an integer array `nums`, return the length of the longest strictly increasing subsequence.  
-    **Input**: `nums = [10, 9, 2, 5, 3, 7, 101, 18]` **Output**: `4`
-
-11. **Longest Palindromic Subsequence**: Given a string `s`, find the length of the longest palindromic subsequence in `s`.  
-    **Input**: `s = "bbbab"` **Output**: `4`
-
-12. **Longest Palindrome**: Given a string `s`, return the length of the longest palindrome that can be built with those letters.  
-    **Input**: `s = "abccccdd"` **Output**: `7`
-
-13. **Find the Duplicate Number**: Given an array `nums` containing `n + 1` integers, find the repeated number.  
-    **Input**: `nums = [1, 3, 4, 2, 2]` **Output**: `2`
-
-14. **Validate IP Address**: Given a string `queryIP`, return "IPv4" if it's a valid IPv4 address, "IPv6" if it's a valid IPv6 address, or "Neither" if it's not a valid IP address.  
-    **Input**: `queryIP = "172.16.254.1"` **Output**: `"IPv4"`
-
-15. **Find All Numbers Disappeared in an Array**: Given an array `nums`, find all the elements from 1 to `n` that do not appear in the array.  
-    **Input**: `nums = [4,3,2,7,8,2,3,1]` **Output**: `[5, 6]`
-
-16. **3Sum Closest**: Given an integer array `nums` and an integer `target`, find the sum of three integers in `nums` closest to `target`.  
-    **Input**: `nums = [-1, 2, 1, -4], target = 1` **Output**: `2`
 ---
 
+### **LeetCode Problems**
 
-### **Javascript Implementation Questions**
+1. **Reverse String**: Write a function that reverses a string.  
+   **Input**: `s = "hello"` → **Output**: `"olleh"`
+
+2. **Move Zeroes**: Given an array `nums`, move all `0`s to the end without changing the relative order of the non-zero elements.  
+   **Input**: `nums = [0, 1, 0, 3, 12]` → **Output**: `[1, 3, 12, 0, 0]`
+
+3. **Best Time to Buy and Sell Stock**: Given an array `prices`, find the maximum profit from a single buy and sell.  
+   **Input**: `prices = [7, 1, 5, 3, 6, 4]` → **Output**: `5`
+
+4. **Contains Duplicate**: Given an integer array `nums`, return `true` if any value appears at least twice in the array, and `false` if every element is distinct.  
+   **Input**: `nums = [1, 2, 3, 1]` → **Output**: `true`
+
+5. **Generate Parentheses**: Given `n` pairs of parentheses, write a function to generate all combinations of well-formed parentheses.  
+   **Input**: `n = 3` → **Output**: `["((()))","(()())","(())()","()(())","()()()"]`
+
+6. **Sort Colors**: Given an array `nums` with values `0`, `1`, and `2` representing red, white, and blue respectively, sort them in-place.  
+   **Input**: `nums = [2, 0, 2, 1, 1, 0]` → **Output**: `[0, 0, 1, 1, 2, 2]`
+
+7. **Add Strings**: Given two non-negative integers `num1` and `num2` represented as strings, return the sum of `num1` and `num2` as a string.  
+   **Input**: `num1 = "11", num2 = "123"` → **Output**: `"134"`
+
+8. **Third Maximum Number**: Given an integer array `nums`, return the third distinct maximum number in this array.  
+   **Input**: `nums = [3, 2, 1]` → **Output**: `1`
+
+9. **Rotate Array**: Given an integer array `nums`, rotate the array to the right by `k` steps.  
+   **Input**: `nums = [1, 2, 3, 4, 5, 6, 7], k = 3` → **Output**: `[5, 6, 7, 1, 2, 3, 4]`
+
+10. **Longest Increasing Subsequence**: Given an integer array `nums`, return the length of the longest strictly increasing subsequence.  
+    **Input**: `nums = [10, 9, 2, 5, 3, 7, 101, 18]` → **Output**: `4`
+
+11. **Longest Palindromic Subsequence**: Given a string `s`, find the length of the longest palindromic subsequence in `s`.  
+    **Input**: `s = "bbbab"` → **Output**: `4`
+
+12. **Longest Palindrome**: Given a string `s`, return the length of the longest palindrome that can be built with those letters.  
+    **Input**: `s = "abccccdd"` → **Output**: `7`
+
+13. **Find the Duplicate Number**: Given an array `nums` containing `n + 1` integers, find the repeated number.  
+    **Input**: `nums = [1, 3, 4, 2, 2]` → **Output**: `2`
+
+14. **Validate IP Address**: Given a string `queryIP`, return "IPv4" if it's a valid IPv4 address, "IPv6" if it's a valid IPv6 address, or "Neither" if it's not a valid IP address.  
+    **Input**: `queryIP = "172.16.254.1"` → **Output**: `"IPv4"`
+
+15. **Find All Numbers Disappeared in an Array**: Given an array `nums`, find all the elements from 1 to `n` that do not appear in the array.  
+    **Input**: `nums = [4,3,2,7,8,2,3,1]` → **Output**: `[5, 6]`
+
+16. **3Sum Closest**: Given an integer array `nums` and an integer `target`, find the sum of three integers in `nums` closest to `target`.  
+    **Input**: `nums = [-1, 2, 1, -4], target = 1` → **Output**: `2`
+
+17. **Chunk Array**  
+    Input: `arr = [1, 2, 3, 4, 5], size = 2` → Output: `[[1, 2], [3, 4], [5]]`
+
+18. **Differences Between Two Objects**  
+    Input: `obj1 = { a: 1, b: 2 }, obj2 = { a: 1, b: 3 }` → Output: `{ b: [2, 3] }`
+
+19. **Timeout Cancellation**  
+    Input: `fn = () => console.log("Hello"), t = 1000` → Output: `"Hello"`
+
+20. **Array Upper Bound**  
+    Input: `arr = [1, 2, 2, 3], target = 2` → Output: `2`
+
+21. **Create Object from Two Arrays**  
+    Input: `keys = ["a", "b"], values = [1, 2]` → Output: `{ a: 1, b: 2 }`
+
+22. **Repeat String**  
+    Input: `str = "hello", times = 2` → Output: `"hellohello"`
+
+23. **Inversion of Object**  
+    Input: `obj = { a: 1, b: 2 }` → Output: `{ 1: "a", 2: "b" }`
+
+24. **Bind Function to Context**  
+    Input: `fn = function() { return this.a; }, context = { a: 1 }` → Output: `1`
+
+25. **Deep Merge of Two Objects**  
+    Input: `obj1 = { a: 1 }, obj2 = { b: 2 }` → Output: `{ a: 1, b: 2 }`
+
+26. **Flatten Deeply Nested Array**  
+    Input: `arr = [1, [2, [3, [4]]]], depth = 2` → Output: `[1, 2, 3, [4]]`
+
+27. **JSON Deep Equal**  
+    Input: `obj1 = { a: 1 }, obj2 = { a: 1 }` → Output: `true`
+    
+29. **On given array add 1 to the last number and return the result as a list of digits**. Input: lst = `[1, 2, 3]` Output: `[1, 2, 4]` Input: lst = `[9]` Output: `[1, 0]`
+
+---
+
+### **JavaScript Implementation Questions**
 
 1. Pure function and impure function example.
 2. Print a counter value every 1 second.
@@ -217,9 +261,7 @@
 6. Implement currying.
 7. Implement `call`, `apply`, and `bind`.
 8. Memoize a function.
-9. Implement `Promise.all` function and all methods: `Promise.isSettled`, `Promise.any`, and `Promise.race`.
 10. Implement debounce and throttle to control the rate of function execution.
-11. Create a promise that resolves after 1 second and convert it to async/await.
 12. Write the syntax to set and get items in session and local storage.
 13. Use JSON to parse and stringify data.
 14. Create an arrow function.
@@ -243,8 +285,5 @@
 
 1. Center a div using CSS and JavaScript.
 2. If screen size is 720px set background color yellow, if greater than 720px green, and if less than 480px set color pink.
-3. absolute, relative, static
-4. flex, grid and float
-
----
-
+3. absolute, relative, static.
+4. flex, grid, and float.
