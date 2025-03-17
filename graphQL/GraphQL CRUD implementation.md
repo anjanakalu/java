@@ -1,4 +1,4 @@
-```markdown
+
 # Complete Guide to Apollo Server for Beginners
 
 This guide explains the Apollo Server setup, schema design, resolver implementation, and CRUD operations in a beginner-friendly way. It includes inline comments to help you understand what each part of the code does.
@@ -149,6 +149,7 @@ import { typeDefs } from './schema.js'; // Import schema
 // Resolvers define how to fetch or modify data
 const resolvers = {
   // Entry points for queries
+  // Query Resolvers (query resolvers when you need to fetch data for the top-level fields in your query)
   Query: {
     // Get all games
     games() {
@@ -177,6 +178,7 @@ const resolvers = {
   },
 
   // Resolvers for nested fields
+  // Type Resolvers (type resolvers when you need to resolve nested fields in your schema)
   Game: {
     // Get reviews for a specific game
     reviews(parent) {
@@ -244,6 +246,101 @@ console.log('Server ready at port', 4000);
 ```
 
 ---
+
+### Resolvers in Apollo Server: Query Resolvers, Type Resolver, Mutation Resolvers
+
+Resolvers are functions that **fetch or compute data** for fields in your GraphQL schema. They are divided into two types:
+
+---
+
+### 4.1. **Query Resolvers**
+- **Definition**: Query resolvers handle **top-level fields** in the `Query` type of your schema. These fields are the entry points for fetching data in a GraphQL query.
+- **When to Use**: Use query resolvers when you need to fetch data for **root-level queries** (e.g., `games`, `game`, `authors`).
+- **Where Defined**: Defined under the `Query` key in the resolvers object.
+- **Parent Argument**: Not applicable, as these resolvers handle top-level fields.
+- **Example**:
+  ```javascript
+  const resolvers = {
+    Query: {
+      games() {
+        return db.games; // Fetch all games
+      },
+      game(_, args) {
+        return db.games.find((game) => game.id === args.id); // Fetch a single game by ID
+      },
+    },
+  };
+  ```
+
+---
+
+### 4.2. **Type Resolvers**
+- **Definition**: Type resolvers handle **nested fields** within specific types (e.g., `reviews` in `Game`, `game` in `Review`). They are used to resolve fields that depend on the parent object.
+- **When to Use**: Use type resolvers when you need to fetch data for **nested fields** in your schema (e.g., fetching reviews for a game or the author of a review).
+- **Where Defined**: Defined under the type name (e.g., `Game`, `Review`, `Author`) in the resolvers object.
+- **Parent Argument**: Receives the **parent object** (the result of the parent resolver) as context to resolve nested fields.
+- **Example**:
+  ```javascript
+  const resolvers = {
+    Game: {
+      reviews(parent) {
+        return db.reviews.filter((review) => review.game_id === parent.id); // Fetch reviews for a game
+      },
+    },
+    Review: {
+      game(parent) {
+        return db.games.find((game) => game.id === parent.game_id); // Fetch the game for a review
+      }
+      -- -- --
+    }
+    }
+  ```
+
+---
+
+### When Are Resolvers Required?
+- **Query Resolvers**: Required for every field defined in the `Query` type. These resolvers are mandatory for root-level queries.
+- **Type Resolvers**: Required for every field in a type that **cannot be resolved directly from the parent object**. For example:
+  - If a field is computed (e.g., `reviews` in `Game`).
+  - If a field requires additional data fetching (e.g., `game` in `Review`).
+
+---
+
+### Key Differences
+| **Aspect**         | **Query Resolvers**                          | **Type Resolvers**                          |
+|---------------------|----------------------------------------------|---------------------------------------------|
+| **Definition**      | Handle top-level fields in the `Query` type. | Handle nested fields within specific types. |
+| **When to Use**     | Fetching data for root-level queries.        | Fetching data for nested fields.            |
+| **Where Defined**   | Under the `Query` key in resolvers.          | Under the type name (e.g., `Game`, `Review`). |
+| **Parent Argument** | Not applicable.                              | Receives the parent object for context.     |
+
+---
+
+### Example: Combining Query and Type Resolvers
+
+#### Schema
+```graphql
+type Query {
+  games: [Game]
+  game(id: ID!): Game
+}
+
+type Game {
+  id: ID!
+  title: String!
+  platform: [String!]!
+  reviews: [Review]
+}
+
+---
+
+### Summary
+- **Query Resolvers**: Handle top-level fields in the `Query` type. Use them for root-level queries.
+- **Type Resolvers**: Handle nested fields within specific types. Use them for resolving fields that depend on the parent object or require additional data fetching.
+- **When Required**:
+  - Query resolvers are required for every field in the `Query` type.
+  - Type resolvers are required for nested fields that cannot be resolved directly from the parent object.
+
 
 ## 5. CRUD Operations
 
@@ -546,3 +643,219 @@ input AddGameInput {
 **Explained:** This defines the `AddGameInput` input type, which is used as an argument for the `addGame` mutation. It includes:
 - `title`: The title of the game (required).
 - `platform`: A list of platforms the of the game (required).
+
+
+### 7. **GraphQL Naming Considerations & Resolver Mapping**
+
+| **Element**              | **Where Used (Resolvers)**            | **Schema Definition**                                      | **Naming Convention**    | **Needs to Match Schema?** | **Apollo Server Matching (Query/Field)**                              |
+|--------------------------|---------------------------------------|------------------------------------------------------------|--------------------------|----------------------------|----------------------------------------------------------------------|
+| **Game Query**            | `Query.games`, `Query.game`           | `games: [Game!]!` <br> `game(id: ID!): Game!`               | ✅ Plural (`games`) for list, singular (`game`) for entity | ✅ Yes | `query { games { id title } }`                                    |
+| **Game Type**             | `Game`                                | `type Game { id, title, platform, reviews }`                | ✅ Matches schema exactly | ✅ Yes | Used in multiple queries                                          |
+| **Game Reviews**          | `Game.reviews(parent)`                | `reviews: [Review]` inside `Game`                           | ✅ Matches schema exactly | ✅ Yes | `query { game(id: "1") { reviews { content rating } } }`          |
+| **Review Query**          | `Query.reviews`, `Query.review`       | `reviews: [Review!]!` <br> `review(id: ID!): Review!`       | ✅ Consistent plural/singular usage | ✅ Yes | `query { reviews { content rating } }`                             |
+| **Review Type**           | `Review`                              | `type Review { id, content, rating, game, author }`         | ✅ Matches schema exactly | ✅ Yes | Referenced in queries                                             |
+| **Review Game**           | `Review.game(parent)`                 | `game: Game` inside `Review`                                | ✅ Matches schema exactly | ✅ Yes | `query { reviews { game { title } } }`                             |
+| **Review Author**         | `Review.author(parent)`               | `author: Author` inside `Review`                            | ✅ Matches schema exactly | ✅ Yes | `query { reviews { author { name } } }`                            |
+| **Author Query**          | `Query.authors`, `Query.author`       | `authors: [Author!]!` <br> `author(id: ID!): Author!`       | ✅ Proper plural/singular usage | ✅ Yes | `query { authors { id name verified } }`                           |
+| **Author Type**           | `Author`                              | `type Author { id, name, verified, reviews }`               | ✅ Matches schema exactly | ✅ Yes | Used in multiple queries                                          |
+| **Author Reviews**        | `Author.reviews(parent)`              | `reviews: [Review]` inside `Author`                         | ✅ Matches schema exactly | ✅ Yes | `query { authors { reviews { content rating } } }`                 |
+| **Add Game Mutation**     | `Mutation.addGame`                    | `addGame(game: AddGameInput!): Game!`                       | ✅ Action verb (`addGame`) | ✅ Yes | `mutation { addGame(game: { title: "New Game" platform: ["PC"] }) { id title } }` |
+| **Delete Game Mutation**  | `Mutation.deleteGame`                 | `deleteGame(id: ID!): [Game]`                               | ✅ Action verb (`deleteGame`) | ✅ Yes | `mutation { deleteGame(id: "1") { id title } }`                    |
+| **Update Game Mutation**  | `Mutation.updateGame`                 | `updateGame(id: ID!, edits: EditGameInput!): Game!`         | ✅ Action verb (`updateGame`) | ✅ Yes | `mutation { updateGame(id: "1", edits: { title: "Updated Game" }) { title } }` |
+
+---
+
+#### **Key Considerations:**
+
+- **Apollo Server Matching Schema & Resolvers:**
+  - **All field names in Apollo Server queries and resolvers MUST match** the schema exactly. This means that `game` in the schema should be used as the field name in the query as well as in the resolver function.
+  
+- **Matching the Resolvers to the Schema:**
+  - The resolver function **MUST return data according to the schema definitions**. For example, `Query.game` should return a single `Game` object, and `Game.reviews` should return an array of `Review` objects, all matching their respective schema definitions.
+
+- **Apollo Server Query Naming:**
+  - All query field names (like `games`, `reviews`, `authors`) **MUST follow the schema's plural/singular conventions**. For example, the `Query.games` resolver corresponds to the `games: [Game!]!` field in the schema.
+  - Nested fields, such as `reviews` inside `Game` or `author` inside `Review`, must also **match** the schema's field names exactly, both in the resolver and the schema.
+
+---
+### 8 **Step-by-Step Flow for a Query in Apollo Server**
+
+#### 8.1 **Simple Query Example: Fetching All Games**
+```graphql
+query {
+  games {
+    id
+    title
+    platform
+  }
+}
+```
+
+**Step 1: Query Parsing & Validation**
+- The Apollo Server receives the query and parses it to understand the requested fields (`id`, `title`, `platform`) and the operation (`games`).
+- The server validates the query against the `typeDefs` (schema) to ensure:
+  - The `games` field is a valid query.
+  - The requested fields (`id`, `title`, `platform`) exist in the `Game` type.
+- The schema defines:
+  ```graphql
+  type Query {
+    games: [Game]
+  }
+  type Game {
+    id: ID!
+    title: String!
+    platform: [String!]!
+  }
+  ```
+  This ensures the `games` field is valid and returns an array of `Game` objects.
+
+**Step 2: Resolver Invocation**
+- The server identifies that the `games` field in the query corresponds to the `games` resolver in the `Query` type.
+- The resolver function `Query.games()` is triggered.
+
+**Step 3: Data Fetching**
+- The resolver accesses the mock database (`db.games`) to fetch all games.
+- It returns the list of game objects:
+  ```json
+  [
+    { id: "1", title: "Zelda, Tears of the Kingdom", platform: ["Switch"] },
+  so on __
+    { id: "5", title: "Pokemon Scarlet", platform: ["PS5", "Xbox", "PC"] }
+  ]
+  ```
+
+**Step 4: Response Construction**
+- The server constructs the response with the requested fields:
+  ```json
+  {
+    "data": {
+      "games": [
+        { "id": "1", "title": "Zelda, Tears of the Kingdom", "platform": ["Switch"] },
+        { "id": "5", "title": "Pokemon Scarlet", "platform": ["PS5", "Xbox", "PC"] }
+      ]
+    }
+  }
+  ```
+
+---
+
+#### 8.2 **Nested Query Example: Fetching Games with Reviews**
+```graphql
+query {
+  games {
+    id
+    title
+    platform
+    reviews {
+      content
+      rating
+    }
+  }
+}
+```
+
+**Step 1: Query Parsing & Validation**
+- The server parses the query and identifies the requested fields (`id`, `title`, `platform`, `reviews`) and the nested fields inside `reviews` (`content`, `rating`).
+- The server validates the query against the `typeDefs` (schema) to ensure:
+  - The `games` field is a valid query.
+  - The requested fields (`id`, `title`, `platform`) exist in the `Game` type.
+  - The `reviews` field is a valid nested field in the `Game` type.
+- The schema defines:
+  ```graphql
+  type Query {
+    games: [Game]
+  }
+  type Game {
+    id: ID!
+    title: String!
+    platform: [String!]!
+    reviews: [Review]
+  }
+  type Review {
+    id: ID!
+    content: String!
+    rating: Int!
+  }
+  ```
+
+**Step 2: Resolver Invocation (Top-Level)**
+- The server identifies that the `games` field in the query corresponds to the `games` resolver in the `Query` type.
+- The resolver function `Query.games()` is triggered.
+- It fetches all games from the mock database and returns:
+  ```json
+  [
+    { id: "1", title: "Zelda, Tears of the Kingdom", platform: ["Switch"] },
+    { id: "2", title: "Final Fantasy 7 Remake", platform: ["PS5", "Xbox"] },
+   --
+  ]
+  ```
+
+**Step 3: Resolver Invocation (Nested Field)**
+- For each game, the server detects the `reviews` field in the query and triggers the `Game.reviews(parent)` resolver.
+- The `parent` argument contains the game object returned in Step 2.
+- The resolver filters `db.reviews` to find reviews where `game_id === parent.id` and returns:
+  - For `game_id: "1"`:
+    ```json
+    [
+      { id: "2", rating: 10, content: "lorem ipsum", author_id: "2", game_id: "1" },
+      { id: "7", rating: 10, content: "lorem ipsum", author_id: "3", game_id: "1" }
+    ]
+    ```
+  - For `game_id: "2"`:
+    ```json
+    [
+      { id: "1", rating: 9, content: "lorem ipsum", author_id: "1", game_id: "2" },
+      { id: "6", rating: 7, content: "lorem ipsum", author_id: "1", game_id: "2" }
+    ]
+    ```
+  - For other games, it returns the corresponding reviews.
+
+**Step 4: Response Construction**
+- The server constructs the response with the requested fields:
+  ```json
+  {
+    "data": {
+      "games": [
+        {
+          "id": "1",
+          "title": "Zelda, Tears of the Kingdom",
+          "platform": ["Switch"],
+          "reviews": [
+            { "content": "lorem ipsum", "rating": 10 },
+            { "content": "lorem ipsum", "rating": 10 }
+          ]
+        },
+        {
+          "id": "2",
+          "title": "Final Fantasy 7 Remake",
+          "platform": ["PS5", "Xbox"],
+          "reviews": [
+            { "content": "lorem ipsum", "rating": 9 },
+            { "content": "lorem ipsum", "rating": 7 }
+          ]
+        },
+  so on__
+          ]
+        }
+      ]
+    }
+  }
+  ```
+
+---
+
+### Where It Triggers
+- **Apollo Server** is running at `http://localhost:4000`.
+- The query is submitted to this endpoint, and the server processes it.
+
+### How It Gets Results
+- The resolver accesses `db.games` (static data in this example).
+- In real-world scenarios, this could involve database queries or API calls to fetch the data dynamically.
+
+---
+
+### Summary of Steps
+1. **Query Parsing & Validation**: The server parses and validates the query against the schema to ensure the requested fields and operations are valid.
+2. **Resolver Invocation**: The appropriate resolver function is triggered based on the query.
+3. **Data Fetching**: The resolver fetches data from the database or other sources.
+4. **Response Construction**: The server constructs the response by mapping the fetched data to the requested fields.
