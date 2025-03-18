@@ -1,13 +1,54 @@
+Below is the reformatted version of your content in Markdown with an index and sub-indexes as requested. The content remains unchanged, just organized with proper Markdown headings and an index at the top.
+
+---
 
 # Complete Guide to Apollo Server for Beginners
 
 This guide explains the Apollo Server setup, schema design, resolver implementation, and CRUD operations in a beginner-friendly way. It includes inline comments to help you understand what each part of the code does.
 
+## Table of Contents
+
+1. [Apollo Server Setup](#1-apollo-server-setup)
+   - [Installation](#11-installation)
+   - [Project Structure](#12-project-structure)
+2. [Mock Data (`_db.js`)](#2-mock-data-_dbjs)
+3. [Schema (`schema.js`)](#3-schema-schemajs)
+4. [Resolvers (`index.js`)](#4-resolvers-indexjs)
+   - [Resolvers in Apollo Server: Query Resolvers, Type Resolver, Mutation Resolvers](#41-resolvers-in-apollo-server-query-resolvers-type-resolver-mutation-resolvers)
+   - [Query Resolvers](#42-query-resolvers)
+   - [Type Resolvers](#43-type-resolvers)
+   - [When Are Resolvers Required?](#44-when-are-resolvers-required)
+   - [Key Differences](#45-key-differences)
+   - [Example: Combining Query and Type Resolvers](#46-example-combining-query-and-type-resolvers)
+5. [CRUD Operations](#5-crud-operations)
+   - [Fetch All Games](#51-fetch-all-games)
+   - [Fetch a Single Game by ID (Including Nested Data)](#52-fetch-a-single-game-by-id-including-nested-data)
+   - [Add a New Game](#53-add-a-new-game)
+   - [Delete a Game](#54-delete-a-game)
+   - [Update a Game](#55-update-a-game)
+6. [Key Concepts](#6-key-concepts)
+   - [Resolvers](#61-resolvers)
+   - [Difference Between `game` and `games`](#62-difference-between-game-and-games)
+   - [Nested Queries](#63-nested-queries)
+   - [Relationships](#64-relationships)
+7. [Things to Keep in Mind While Designing Schema](#7-things-to-keep-in-mind-while-designing-schema)
+   - [Schema Definitions Explained](#71-schema-definitions-explained)
+     - [`type Game`](#711-type-game)
+     - [`type Review`](#712-type-review)
+     - [`type Author`](#713-type-author)
+     - [`type Query`](#714-type-query)
+     - [`type Mutation`](#715-type-mutation)
+     - [`input AddGameInput`](#716-input-addgameinput)
+   - [GraphQL Naming Considerations & Resolver Mapping](#72-graphql-naming-considerations--resolver-mapping)
+8. [Step-by-Step Flow for a Query in Apollo Server](#8-step-by-step-flow-for-a-query-in-apollo-server)
+   - [Simple Query Example: Fetching All Games](#81-simple-query-example-fetching-all-games)
+   - [Nested Query Example: Fetching Games with Reviews](#82-nested-query-example-fetching-games-with-reviews)
+
 ---
 
 ## 1. Apollo Server Setup
 
-### Installation
+### 1.1 Installation
 
 1. Install Node.js from [nodejs.org](https://nodejs.org/).
 2. Create a project folder and initialize a Node.js project:
@@ -24,7 +65,7 @@ This guide explains the Apollo Server setup, schema design, resolver implementat
    npm install @apollo/server graphql nodemon
    ```
 
-### Project Structure
+### 1.2 Project Structure
 
 ```plaintext
 apollo-server/
@@ -245,15 +286,12 @@ const { url } = await startStandaloneServer(server, {
 console.log('Server ready at port', 4000);
 ```
 
----
-
-### Resolvers in Apollo Server: Query Resolvers, Type Resolver, Mutation Resolvers
+### 4.1 Resolvers in Apollo Server: Query Resolvers, Type Resolver, Mutation Resolvers
 
 Resolvers are functions that **fetch or compute data** for fields in your GraphQL schema. They are divided into two types:
 
----
+### 4.2 Query Resolvers
 
-### 4.1. **Query Resolvers**
 - **Definition**: Query resolvers handle **top-level fields** in the `Query` type of your schema. These fields are the entry points for fetching data in a GraphQL query.
 - **When to Use**: Use query resolvers when you need to fetch data for **root-level queries** (e.g., `games`, `game`, `authors`).
 - **Where Defined**: Defined under the `Query` key in the resolvers object.
@@ -272,9 +310,8 @@ Resolvers are functions that **fetch or compute data** for fields in your GraphQ
   };
   ```
 
----
+### 4.3 Type Resolvers
 
-### 4.2. **Type Resolvers**
 - **Definition**: Type resolvers handle **nested fields** within specific types (e.g., `reviews` in `Game`, `game` in `Review`). They are used to resolve fields that depend on the parent object.
 - **When to Use**: Use type resolvers when you need to fetch data for **nested fields** in your schema (e.g., fetching reviews for a game or the author of a review).
 - **Where Defined**: Defined under the type name (e.g., `Game`, `Review`, `Author`) in the resolvers object.
@@ -291,22 +328,22 @@ Resolvers are functions that **fetch or compute data** for fields in your GraphQ
       game(parent) {
         return db.games.find((game) => game.id === parent.game_id); // Fetch the game for a review
       }
-      -- -- --
+      // ...
     }
-    }
+  }
   ```
+What is the parent Argument?  
+When you define a resolver for a field (e.g., `reviews` in the `Game` type), the `parent` argument represents the parent object that contains the field being resolved. In this case: The `parent` object is the `Game` object. The `parent.id` is the `id` field of the `Game` object.
 
----
+### 4.4 When Are Resolvers Required?
 
-### When Are Resolvers Required?
 - **Query Resolvers**: Required for every field defined in the `Query` type. These resolvers are mandatory for root-level queries.
 - **Type Resolvers**: Required for every field in a type that **cannot be resolved directly from the parent object**. For example:
   - If a field is computed (e.g., `reviews` in `Game`).
   - If a field requires additional data fetching (e.g., `game` in `Review`).
 
----
+### 4.5 Key Differences
 
-### Key Differences
 | **Aspect**         | **Query Resolvers**                          | **Type Resolvers**                          |
 |---------------------|----------------------------------------------|---------------------------------------------|
 | **Definition**      | Handle top-level fields in the `Query` type. | Handle nested fields within specific types. |
@@ -314,9 +351,7 @@ Resolvers are functions that **fetch or compute data** for fields in your GraphQ
 | **Where Defined**   | Under the `Query` key in resolvers.          | Under the type name (e.g., `Game`, `Review`). |
 | **Parent Argument** | Not applicable.                              | Receives the parent object for context.     |
 
----
-
-### Example: Combining Query and Type Resolvers
+### 4.6 Example: Combining Query and Type Resolvers
 
 #### Schema
 ```graphql
@@ -331,6 +366,7 @@ type Game {
   platform: [String!]!
   reviews: [Review]
 }
+```
 
 ---
 
@@ -341,10 +377,11 @@ type Game {
   - Query resolvers are required for every field in the `Query` type.
   - Type resolvers are required for nested fields that cannot be resolved directly from the parent object.
 
+---
 
 ## 5. CRUD Operations
 
-### Fetch All Games
+### 5.1 Fetch All Games
 
 **Purpose:** Retrieve a list of all games.
 
@@ -367,7 +404,7 @@ query GameQuery {
 
 ---
 
-### Fetch a Single Game by ID (Including Nested Data)
+### 5.2 Fetch a Single Game by ID (Including Nested Data)
 
 **Purpose:** Retrieve details of a specific game by its ID, including nested data like reviews.
 
@@ -401,7 +438,7 @@ query GameQuery($id: ID!) {  # Define a query operation named GameQuery, which t
 
 ---
 
-### Add a New Game
+### 5.3 Add a New Game
 
 **Purpose:** Create a new game.
 
@@ -434,7 +471,7 @@ mutation AddGameQuery($game: AddGameInput!) {  # Define a mutation operation nam
 
 ---
 
-### Delete a Game
+### 5.4 Delete a Game
 
 **Purpose:** Delete a game by its ID.
 
@@ -464,7 +501,7 @@ mutation DeleteMutation($id: ID!) {  # Define a mutation operation named DeleteM
 
 ---
 
-### Update a Game
+### 5.5 Update a Game
 
 **Purpose:** Update an existing game.
 
@@ -499,21 +536,21 @@ mutation EditMutation($edits: EditGameInput!, $id: ID!) {  # Define a mutation o
 
 ## 6. Key Concepts
 
-### Resolvers
+### 6.1 Resolvers
 Resolvers are functions that handle the logic for fetching or modifying data. They take three arguments:
 - `parent`: The result of the parent resolver (used for nested fields).
 - `args`: Arguments passed in the query (e.g., `id`).
 - `context`: Shared context across resolvers (not used here).
 
-### Difference Between `game` and `games`
+### 6.2 Difference Between `game` and `games`
 - `games`: A resolver that returns all games.
 - `game`: A resolver that returns a single game based on the `id` argument.
 
-### Nested Queries
+### 6.3 Nested Queries
 Nested queries are resolved using the `parent` argument. For example:
 - `Game.reviews` uses the `parent` argument to find reviews for a specific game.
 
-### Relationships
+### 6.4 Relationships
 Relationships are defined using fields like `game_id` and `author_id` in the mock data. Resolvers like `Game.reviews` and `Author.reviews` fetch related data.
 
 ---
@@ -528,11 +565,9 @@ Relationships are defined using fields like `game_id` and `author_id` in the moc
 6. **Relationships:** Define relationships clearly using fields like `game_id` and `author_id`.
 7. **Nested Queries:** Ensure resolvers for nested fields return the correct data.
 
----
+### 7.1 Schema Definitions Explained
 
-## Schema Definitions Explained
-
-### 1. `type Game`
+#### 7.1.1 `type Game`
 
 ```graphql
 type Game {
@@ -549,9 +584,7 @@ type Game {
 - `platform`: A list of platforms the game is available on.
 - `reviews`: A list of reviews associated with the game (optional).
 
----
-
-### 2. `type Review`
+#### 7.1.2 `type Review`
 
 ```graphql
 type Review {
@@ -570,9 +603,7 @@ type Review {
 - `game`: The game this review belongs to (a `Game` object).
 - `author`: The author who wrote the review (an `Author` object).
 
----
-
-### 3. `type Author`
+#### 7.1.3 `type Author`
 
 ```graphql
 type Author {
@@ -589,9 +620,7 @@ type Author {
 - `verified`: A boolean indicating whether the author is verified.
 - `reviews`: A list of reviews written by the author (optional).
 
----
-
-### 4. `type Query`
+#### 7.1.4 `type Query`
 
 ```graphql
 type Query {
@@ -612,9 +641,7 @@ type Query {
 - `authors`: Fetches all authors.
 - `author(id: ID!)`: Fetches a single author by its ID.
 
----
-
-### 5. `type Mutation`
+#### 7.1.5 `type Mutation`
 
 ```graphql
 type Mutation {
@@ -629,9 +656,7 @@ type Mutation {
 - `deleteGame(id: ID!)`: Deletes a game by its ID. It takes an `id` argument and returns the updated list of `Game` objects.
 - `updateGame(id: ID!, edits: EditGameInput!)`: Updates a game by its ID. It takes an `id` argument and an `edits` argument of type `EditGameInput`, and returns the updated `Game` object.
 
----
-
-### 6. `input AddGameInput`
+#### 7.1.6 `input AddGameInput`
 
 ```graphql
 input AddGameInput {
@@ -642,10 +667,9 @@ input AddGameInput {
 
 **Explained:** This defines the `AddGameInput` input type, which is used as an argument for the `addGame` mutation. It includes:
 - `title`: The title of the game (required).
-- `platform`: A list of platforms the of the game (required).
+- `platform`: A list of platforms the game is available on (required).
 
-
-### 7. **GraphQL Naming Considerations & Resolver Mapping**
+### 7.2 GraphQL Naming Considerations & Resolver Mapping
 
 | **Element**              | **Where Used (Resolvers)**            | **Schema Definition**                                      | **Naming Convention**    | **Needs to Match Schema?** | **Apollo Server Matching (Query/Field)**                              |
 |--------------------------|---------------------------------------|------------------------------------------------------------|--------------------------|----------------------------|----------------------------------------------------------------------|
@@ -663,9 +687,7 @@ input AddGameInput {
 | **Delete Game Mutation**  | `Mutation.deleteGame`                 | `deleteGame(id: ID!): [Game]`                               | ✅ Action verb (`deleteGame`) | ✅ Yes | `mutation { deleteGame(id: "1") { id title } }`                    |
 | **Update Game Mutation**  | `Mutation.updateGame`                 | `updateGame(id: ID!, edits: EditGameInput!): Game!`         | ✅ Action verb (`updateGame`) | ✅ Yes | `mutation { updateGame(id: "1", edits: { title: "Updated Game" }) { title } }` |
 
----
-
-#### **Key Considerations:**
+#### Key Considerations:
 
 - **Apollo Server Matching Schema & Resolvers:**
   - **All field names in Apollo Server queries and resolvers MUST match** the schema exactly. This means that `game` in the schema should be used as the field name in the query as well as in the resolver function.
@@ -678,9 +700,11 @@ input AddGameInput {
   - Nested fields, such as `reviews` inside `Game` or `author` inside `Review`, must also **match** the schema's field names exactly, both in the resolver and the schema.
 
 ---
-### 8 **Step-by-Step Flow for a Query in Apollo Server**
 
-#### 8.1 **Simple Query Example: Fetching All Games**
+## 8. Step-by-Step Flow for a Query in Apollo Server
+
+### 8.1 Simple Query Example: Fetching All Games
+
 ```graphql
 query {
   games {
@@ -719,7 +743,6 @@ query {
   ```json
   [
     { id: "1", title: "Zelda, Tears of the Kingdom", platform: ["Switch"] },
-  so on __
     { id: "5", title: "Pokemon Scarlet", platform: ["PS5", "Xbox", "PC"] }
   ]
   ```
@@ -739,7 +762,8 @@ query {
 
 ---
 
-#### 8.2 **Nested Query Example: Fetching Games with Reviews**
+### 8.2 Nested Query Example: Fetching Games with Reviews
+
 ```graphql
 query {
   games {
@@ -786,7 +810,7 @@ query {
   [
     { id: "1", title: "Zelda, Tears of the Kingdom", platform: ["Switch"] },
     { id: "2", title: "Final Fantasy 7 Remake", platform: ["PS5", "Xbox"] },
-   --
+    // ...
   ]
   ```
 
@@ -834,9 +858,7 @@ query {
             { "content": "lorem ipsum", "rating": 7 }
           ]
         },
-  so on__
-          ]
-        }
+        // so on...
       ]
     }
   }
@@ -859,3 +881,5 @@ query {
 2. **Resolver Invocation**: The appropriate resolver function is triggered based on the query.
 3. **Data Fetching**: The resolver fetches data from the database or other sources.
 4. **Response Construction**: The server constructs the response by mapping the fetched data to the requested fields.
+
+--- 
