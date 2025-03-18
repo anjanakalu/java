@@ -1,3 +1,14 @@
+# graphql package
+- It is the core GraphQL implementation in **JavaScript**.
+- It provides the functionality to define GraphQL Schemas, parse and validate GraphQL queries, execute queries against a schema, and format responses.
+- `graphql` is not tied to any specific server or client framework; it's a standalone library that can be used in various JavaScript environments.
+
+# @apollo/server
+- This package is part of the Apollo ecosystem and is used for building GraphQL servers in Node.js.
+- It provides tools and utilities to create and manage GraphQL schemas, handle incoming GraphQL requests, execute queries, and send responses.
+- `@apollo/server` is built on top of the popular Express framework, making it easy to integrate GraphQL into existing Node.js web applications.
+- Overall, `@apollo/server` simplifies the process of creating and maintaining GraphQL servers in Node.js environments.
+
 ### **Comprehensive Guide to Nodes, Relationships, Connections, and Edges in GraphQL**
 
 This guide provides a detailed explanation of how to model the provided dataset (`games`, `authors`, and `reviews`) using GraphQL's core concepts: **nodes**, **relationships**, **connections**, and **edges**. We'll explore how to structure the schema, traverse the graph, and perform mutations, with examples tailored to the dataset.
