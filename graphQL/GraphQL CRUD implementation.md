@@ -1,5 +1,3 @@
-Below is the reformatted version of your content in Markdown with an index and sub-indexes as requested. The content remains unchanged, just organized with proper Markdown headings and an index at the top.
-
 ---
 
 # Complete Guide to Apollo Server for Beginners
