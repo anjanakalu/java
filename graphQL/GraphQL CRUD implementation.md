@@ -241,7 +241,7 @@ const resolvers = {
     },
   },
 
-  // Entry points for mutations
+  // Mutation Resolvers: Handle data modification operations
   Mutation: {
     // Delete a game by ID
     deleteGame(_, args) {
@@ -426,7 +426,7 @@ query GameQuery($id: ID!) {  # Define a query operation named GameQuery, which t
 
 ```json
 {
-  "id": "1"  // The ID of the game to fetch
+  "id": "1"  # The ID of the game to fetch
 }
 ```
 
@@ -456,9 +456,9 @@ mutation AddGameQuery($game: AddGameInput!) {  # Define a mutation operation nam
 
 ```json
 {
-  "game": {  // The input object for adding a game
-    "title": "New Game",  // The title of the game
-    "platform": ["PC", "Console"]  // The platforms the game is available on
+  "game": {  # The input object for adding a game
+    "title": "New Game",  # The title of the game
+    "platform": ["PC", "Console"]  # The platforms the game is available on
   }
 }
 ```
@@ -489,7 +489,7 @@ mutation DeleteMutation($id: ID!) {  # Define a mutation operation named DeleteM
 
 ```json
 {
-  "id": "1"  // The ID of the game to delete
+  "id": "1"  # The ID of the game to delete
 }
 ```
 
@@ -518,10 +518,10 @@ mutation EditMutation($edits: EditGameInput!, $id: ID!) {  # Define a mutation o
 
 ```json
 {
-  "id": "1",  // The ID of the game to update
-  "edits": {  // The input object for updating a game
-    "title": "Updated Title",  // The new title of the game
-    "platform": ["PC"]  // The new platforms of the game
+  "id": "1",  # The ID of the game to update
+  "edits": {  # The input object for updating a game
+    "title": "Updated Title",  # The new title of the game
+    "platform": ["PC"]  # The new platforms of the game
   }
 }
 ```
@@ -555,13 +555,36 @@ Relationships are defined using fields like `game_id` and `author_id` in the moc
 
 ## 7. Things to Keep in Mind While Designing Schema
 
-1. **Define Types Clearly:** Each type should have a unique name and define the fields it contains.
-2. **Use Scalars:** Use built-in scalar types like `ID`, `String`, `Int`, `Boolean`, and `Float`.
-3. **NonNullable Fields:** Use `!` to indicate that a field cannot be null.
-4. **Lists:** Use `[]` to indicate a list of items.
-5. **Input Types:** Use input types for complex arguments in mutations.
-6. **Relationships:** Define relationships clearly using fields like `game_id` and `author_id`.
-7. **Nested Queries:** Ensure resolvers for nested fields return the correct data.
+## 7. Schema Design Tips
+
+- **Guidelines**:
+  1. **Unique Types**: Use distinct names/fields (e.g., `Game`, `Review`).
+  2. **Scalars**: Use `ID`, `String`, `Int`, etc.
+  3. **Non-Nullable**: Add `!` for required fields (e.g., `id: ID!`).
+  4. **Lists**: Use `[]` for arrays (e.g., `[String!]!`).
+  5. **Input Types**: Define `input` for mutations (e.g., `AddGameInput`).
+  6. **Relationships**: Link via IDs (e.g., `game_id`).
+  7. **Nested Resolvers**: Match schema for nested fields (e.g., `reviews`).
+
+- **Thinking About Relationships & Mutations**:
+  - **Relationships**:
+    - **Connections**: View as real-world links (e.g., `Review` to `Game`/`Author` via `game_id`, `author_id`).
+    - **Bidirectional**: Enable two-way access (e.g., `Game.reviews`, `Review.game`) with consistent ID mapping.
+    - **Normalization**: Use separate arrays (e.g., `games`, `reviews`) to avoid duplication, joined by resolvers; or denormalize (embed `reviews` in `Game`) for simpler queries, harder updates.
+    - **Efficiency**: Filter efficiently (e.g., `db.reviews` by `game_id`); use indexed queries in real DBs.
+  - **Mutations**:
+    - **Purpose**: Base on user needs (e.g., `addGame`, `deleteGame`) with clear returns (e.g., new `Game`, updated `[Game]`).
+    - **Naming**: Use verbs (e.g., `addGame` for creation).
+    - **Returns**: 
+      - `addGame`: New `Game`.
+      - `deleteGame`: Updated `[Game]`.
+      - `updateGame`: Modified `Game`.
+    - **Errors**: Add `MutationResponse { success: Boolean!, message: String }` for feedback (not shown here).
+  - **Input Types**:
+    - **Purpose**: Bundle args cleanly (e.g., `AddGameInput`) for readability.
+    - **Design**: Match target type (e.g., `title`, `platform`), required for creation (`AddGameInput`), optional for updates (`EditGameInput`).
+
+- **Example**: `Game.reviews` uses `game_id`; `updateGame` takes `EditGameInput`, returns updated `Game`.
 
 ### 7.1 Schema Definitions Explained
 
