@@ -131,10 +131,6 @@
 15. What is the difference between block vs inline tags?
 ---
 
-Below is the revised list containing only the "most asked" questions you provided, organized under a single category titled **Most-Asked React Questions**. I’ve kept the original phrasing intact as requested, with minor corrections for clarity (e.g., "Redux Sanga" corrected to "Redux Saga" assuming a typo, and "slicer" to "slice" for standard Redux terminology). No additional questions from previous lists are included.
-
----
-
 ### Most-Asked React Questions
 1. What is virtual doms and how it works?
 2. What is redux, and workflow?
