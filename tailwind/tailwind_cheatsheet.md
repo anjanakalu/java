@@ -1,5 +1,21 @@
 ## **Tailwind CSS Cheatsheet**
+### **🔗 Tailwind CSS Cheatsheet Index**  
+1. [Layout](#1-layout)  
+2. [Sizing](#2-sizing)  
+3. [Spacing](#3-spacing)  
+4. [Typography](#4-typography)  
+5. [Colors](#5-colors)  
+6. [Flexbox](#6-flexbox)  
+7. [Grid](#7-grid)  
+8. [Borders](#8-borders)  
+9. [Effects](#9-effects)  
+10. [Responsive Design](#10-responsive-design)  
+11. [Arbitrary Values](#11-arbitrary-values)  
+12. [Predefined Utilities](#12-predefined-utilities)  
 
+--- 
+
+Click any title to jump to its section! 🎯
 ### **1. Layout**
 Controls how elements are positioned and displayed on the page. Use for structuring layouts and managing visibility.
 
