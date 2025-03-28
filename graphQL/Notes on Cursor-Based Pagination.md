@@ -1,28 +1,26 @@
-Here's the raw version with only the index and links added at the top, leaving all other content exactly as you provided it:
+
+# Notes on Cursor-Based Pagination
+
+## Index
+- [Overview](#overview)
+- [Key Points](#key-points)
+- [Implemented Features](#implemented-features)
+- [Improvements](#improvements)
+- [Variable Definitions](#variable-definitions)
+- [GraphQL Schema (Complete)](#graphql-schema-complete)
+- [Resolvers (Complete)](#resolvers-complete)
+- [Query Sample (Apollo Client)](#query-sample-apollo-client)
+- [Query Sample (React with Apollo)](#query-sample-react-with-apollo)
+- [Potential Further Enhancements](#potential-further-enhancements)
 
 ---
 
-# Index
-1. [Notes on Cursor-Based Pagination](#notes-on-cursor-based-pagination)
-2. [Overview](#overview)
-3. [Key Points](#key-points)
-4. [Implemented Features](#implemented-features)
-5. [Improvements](#improvements)
-6. [Variable Definitions](#variable-definitions)
-7. [GraphQL Schema](#graphql-schema)
-8. [Resolvers](#resolvers)
-9. [Query Sample (Apollo Client)](#query-sample-apollo-client)
-10. [Query Sample (React with Apollo)](#query-sample-react-with-apollo)
-11. [Potential Further Enhancements](#potential-further-enhancements)
-
----
-
-### Notes on Cursor-Based Pagination <a name="notes-on-cursor-based-pagination"></a>
-
-#### Overview <a name="overview"></a>
+## Overview <a id="overview"></a>
 Cursor-based pagination, inspired by Relay, uses opaque cursors to mark positions within a dataset, offering a scalable and stable alternative to offset-based pagination. It's particularly suited for large datasets and dynamic data environments where records are frequently added or removed.
 
-#### Key Points <a name="key-points"></a>
+---
+
+## Key Points <a id="key-points"></a>
 - **Relay-Style**: Follows the Connection/Edge/PageInfo pattern for a consistent, standardized structure.
 - **Components**:
   - **Edge**: Pairs a node (data item) with its cursor for pagination tracking.
@@ -42,7 +40,9 @@ Cursor-based pagination, inspired by Relay, uses opaque cursors to mark position
 - **Filters**: Applied pre-pagination (e.g., `searchText`, `category`) to ensure an accurate `totalCount`.
 - **Sorting**: Controlled by `sortBy` (e.g., "Product Name") and `sortOrder` (`ASC` or `DESC`), maintaining cursor consistency.
 
-#### Implemented Features <a name="implemented-features"></a>
+---
+
+## Implemented Features <a id="implemented-features"></a>
 This implementation enhances the standard cursor-based pagination with the following features:
 - **Bidirectional Navigation**: Supports both forward (`first`, `after`) and backward (`last`, `before`) pagination for flexible traversal.
 - **Sorting Flexibility**: 
@@ -57,39 +57,46 @@ This implementation enhances the standard cursor-based pagination with the follo
 - **Human-Readable Sort Fields**: Uses "Product Name" instead of "name" for better readability and developer experience.
 - **Stable Cursors**: Base64-encoded `prod_id` ensures cursors remain stable within a given sort order.
 
-#### Improvements <a name="improvements"></a>
+---
+
+## Improvements <a id="improvements"></a>
 - **Error Handling**: Added checks for invalid cursors, conflicting pagination args, and edge cases like empty datasets.
 - **Sorting**: Enhanced with `sortBy` and `sortOrder` for customizable ordering, applied before pagination.
 - **Client Integration**: Optimized for real-world use cases like infinite scrolling with clear loading states.
 - **Clarity**: Added `startCursor` to `PageInfo` and improved documentation for better understanding.
 
 ---
-what each variable will accept based on its assigned value:
 
-first (number) – Specifies the number of items to fetch (likely for pagination).
-✅ Accepts: Positive integers (e.g., 10, 20).
+## Variable Definitions <a id="variable-definitions"></a>
+What each variable will accept based on its assigned value:
 
-after (string | null) – Typically used for cursor-based pagination.
-✅ Accepts: A cursor (string) or null if no cursor is provided.
+- **first (number)** – Specifies the number of items to fetch (likely for pagination).  
+  ✅ **Accepts**: Positive integers (e.g., 10, 20).
 
-skip (number) – Specifies how many items to skip.
-✅ Accepts: Non-negative integers (e.g., 0, 2, 5).
+- **after (string | null)** – Typically used for cursor-based pagination.  
+  ✅ **Accepts**: A cursor (string) or null if no cursor is provided.
 
-searchText (string) – A text string for filtering results by name, description, etc.
-✅ Accepts: Any string (e.g., "laptop", "phone").
+- **skip (number)** – Specifies how many items to skip.  
+  ✅ **Accepts**: Non-negative integers (e.g., 0, 2, 5).
 
-categories (string[]) – A list of category names for filtering.
-✅ Accepts: An array of strings (e.g., ["Electronics", "Portable"]).
+- **searchText (string)** – A text string for filtering results by name, description, etc.  
+  ✅ **Accepts**: Any string (e.g., "laptop", "phone").
 
-brand (string) – A single brand name for filtering.
-✅ Accepts: A string (e.g., "TechCo", "Apple").
+- **categories (string[])** – A list of category names for filtering.  
+  ✅ **Accepts**: An array of strings (e.g., ["Electronics", "Portable"]).
 
-sortBy (string) – The field by which to sort the results.
-✅ Accepts: A string representing a valid field name (e.g., "Product Name", "Price").
+- **brand (string)** – A single brand name for filtering.  
+  ✅ **Accepts**: A string (e.g., "TechCo", "Apple").
 
-sortOrder ("ASC" | "DESC") – The sorting direction.
-✅ Accepts: "ASC" (ascending) or "DESC" (descending).
-### GraphQL Schema (Complete) <a name="graphql-schema"></a>
+- **sortBy (string)** – The field by which to sort the results.  
+  ✅ **Accepts**: A string representing a valid field name (e.g., "Product Name", "Price").
+
+- **sortOrder ("ASC" | "DESC")** – The sorting direction.  
+  ✅ **Accepts**: "ASC" (ascending) or "DESC" (descending).
+
+---
+
+## GraphQL Schema (Complete) <a id="graphql-schema-complete"></a>
 
 ```graphql
 # schema/product.typeDefs.js
@@ -147,7 +154,7 @@ type Query {
 
 ---
 
-### Resolvers (Complete) <a name="resolvers"></a>
+## Resolvers (Complete) <a id="resolvers-complete"></a>
 
 ```javascript
 // schema/product.resolvers.js
@@ -254,7 +261,7 @@ module.exports = resolvers;
 
 ---
 
-### Query Sample (Apollo Client) <a name="query-sample-apollo-client"></a>
+## Query Sample (Apollo Client) <a id="query-sample-apollo-client"></a>
 
 ```javascript
 import { gql } from '@apollo/client';
@@ -321,7 +328,7 @@ client
 
 ---
 
-### Query Sample (React with Apollo) <a name="query-sample-react-with-apollo"></a>
+## Query Sample (React with Apollo) <a id="query-sample-react-with-apollo"></a>
 
 ```jsx
 // components/ProductList.jsx
@@ -415,7 +422,9 @@ export default ProductList;
 
 ---
 
-#### Potential Further Enhancements <a name="potential-further-enhancements"></a>
+## Potential Further Enhancements <a id="potential-further-enhancements"></a>
 - **Sort Field Validation**: Restrict `sortBy` to valid fields (e.g., "Product Name", "prod_id").
 - **Composite Sorting**: Allow multiple sort fields (e.g., `sortBy: ["category", "Product Name"]`).
 - **Advanced Cursors**: Encode additional data (e.g., timestamp) for datasets with frequent updates.
+
+---
