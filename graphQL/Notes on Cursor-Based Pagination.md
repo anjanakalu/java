@@ -23,10 +23,14 @@ Cursor-based pagination, inspired by Relay, uses opaque cursors to mark position
 ## Key Points <a id="key-points"></a>
 - **Relay-Style**: Follows the Connection/Edge/PageInfo pattern for a consistent, standardized structure.
 - **Components**:
-  - **Edge**: Pairs a node (data item) with its cursor for pagination tracking.
-  - **Node**: The primary entity (e.g., Product).
-  - **Cursor**: An opaque, unique string (e.g., base64-encoded ID) that identifies an item's position.
+  - **Edge**: Pairs a node (data item) with its cursor for pagination tracking. (node + cursor) `{ node: <data (e.g., Product Obj)>, cursor: <unique string> }`
+  - **Node**: The primary entity (e.g., Product/ Product Obj).
+  - **Cursor**: An opaque, unique string (e.g., base64-encoded ID), Used in pagination queries (`after` or `before` cursors to fetch the `next/previous` page).
   - **PageInfo**: Metadata for navigation, including `startCursor`, `endCursor`, `hasNextPage`, and `hasPreviousPage`.
+    - `startCursor` (cursor of the first item in the current page).
+    - `endCursor` (cursor of the last item in the current page).
+    - `hasNextPage` (boolean, true if more items exist after the current page).
+    - `hasPreviousPage` (boolean, true if more items exist before the current page).
   - **TotalCount**: The total number of items in the filtered dataset.
 - **Mechanics**:
   - **Forward Pagination**: Uses `first` (number of items to fetch) and `after` (cursor) to move forward.
