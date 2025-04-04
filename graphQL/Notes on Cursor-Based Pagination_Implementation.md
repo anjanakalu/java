@@ -162,7 +162,25 @@ type Query {
 
 ```javascript
 // schema/product.resolvers.js
-const { base64encode, base64decode } = require('nodejs-base64');
+
+/**
+ * CONDITIONS TESTED:
+ * - Filter by `searchText` in product name (case-insensitive)
+ * - Filter by exact match of `category`
+ * - Optional sorting based on `sortBy` field  field (e.g. "Product Name" or "prod_id") and `sortOrder` (ASC or DESC)
+ * 
+ * PAGINATION RULES:
+ * - Cursor-based pagination using `first`/`after` (forward) OR `last`/`before` (backward)
+ * - Cannot mix forward and backward pagination
+ * - Cannot use both `first` and `last` together
+ * - Cursors (`after`, `before`) are base64-encoded `prod_id`s
+ * - Returned result includes:
+ *   - `edges`: array of products with cursor
+ *   - `pageInfo`: startCursor, endCursor, hasNextPage, hasPreviousPage
+ *   - `totalCount`: total number of filtered products
+ */
+
+import { base64encode, base64decode } from 'nodejs-base64';
 
 const resolvers = {
   Query: {
@@ -172,22 +190,26 @@ const resolvers = {
       { dataSources }
     ) => {
       try {
-        // Fetch all products (replace with DB query)
+        // Fetch all products (replace this with actual DB query in production)
         let products = dataSources.products.getAll();
 
-        // Apply filters
+        // Apply text search filter on product name
         if (searchText) {
-          products = products.filter(p => p.name.toLowerCase().includes(searchText.toLowerCase()));
+          products = products.filter(p =>
+            p.name.toLowerCase().includes(searchText.toLowerCase())
+          );
         }
+
+        // Filter by category if specified
         if (category) {
           products = products.filter(p => p.category === category);
         }
 
-        // Map "Product Name" to "name" field
+        // Field name mapping for UI-friendly names
         const fieldMap = { "Product Name": "name", "prod_id": "prod_id" };
-        const sortField = fieldMap[sortBy] || sortBy; // Fallback to raw sortBy if unmapped
+        const sortField = fieldMap[sortBy] || sortBy;
 
-        // Sort (stable ordering for cursors)
+        // Apply sorting
         if (sortField) {
           products.sort((a, b) => {
             const aValue = a[sortField];
@@ -195,7 +217,6 @@ const resolvers = {
             if (sortOrder === 'ASC') {
               return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
             } else {
-              // DESC
               return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
             }
           });
@@ -203,18 +224,18 @@ const resolvers = {
 
         const totalCount = products.length;
 
-        // Validate pagination args
+        // Validate pagination argument combinations
         if (first && last) throw new Error('Cannot use both "first" and "last"');
         if ((first || after) && (last || before)) {
           throw new Error('Mixing forward and backward pagination is invalid');
         }
 
-        // Decode cursors
+        // Decode base64 cursors to get prod_id
         const decodeCursor = cursor => (cursor ? parseInt(base64decode(cursor)) : null);
         const afterId = decodeCursor(after);
         const beforeId = decodeCursor(before);
 
-        // Determine slice
+        // Determine base slice boundaries
         let startIndex = afterId
           ? products.findIndex(p => p.prod_id === afterId) + 1
           : 0;
@@ -222,25 +243,41 @@ const resolvers = {
           ? products.findIndex(p => p.prod_id === beforeId)
           : totalCount;
 
+        // If cursor IDs are invalid (not found), throw error
         if (startIndex === -1 || endIndex === -1) {
           throw new Error('Invalid cursor provided');
         }
 
+        /**
+         * FORWARD PAGINATION:
+         * - Use `first` to get a chunk starting from `after` cursor
+         * - `startIndex` is already adjusted to be just after `afterId`
+         * - `endIndex` is `startIndex + first`
+         */
         if (first) {
           endIndex = Math.min(startIndex + first, totalCount);
-        } else if (last) {
+        }
+
+        /**
+         * BACKWARD PAGINATION:
+         * - Use `last` to get a chunk ending at `before` cursor
+         * - `endIndex` is already set to be just before `beforeId`
+         * - `startIndex` is `endIndex - last`
+         */
+        else if (last) {
           startIndex = Math.max(endIndex - last, 0);
         }
 
+        // Slice the product list
         const paginatedProducts = products.slice(startIndex, endIndex);
 
-        // Build edges
+        // Build edges with cursors
         const edges = paginatedProducts.map(product => ({
-          cursor: base64encode(product.prod_id.toString()), // Stable cursor
+          cursor: base64encode(product.prod_id.toString()),
           node: product,
         }));
 
-        // PageInfo
+        // Construct pageInfo
         const pageInfo = {
           startCursor: edges.length > 0 ? edges[0].cursor : null,
           endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
@@ -248,6 +285,11 @@ const resolvers = {
           hasPreviousPage: startIndex > 0,
         };
 
+        // FINAL RETURN
+        // Return the paginated structure:
+        // - `edges`: each product with cursor
+        // - `pageInfo`: cursor info and hasNext/Previous flags
+        // - `totalCount`: count before pagination for client-side usage
         return { edges, pageInfo, totalCount };
       } catch (error) {
         throw new Error(`Pagination error: ${error.message}`);
