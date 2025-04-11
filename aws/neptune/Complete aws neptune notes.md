@@ -392,9 +392,45 @@ graph TD
 
 ---
 
-### Notes on Usage
-- **Copy this content into a `.md` file** (e.g., `neptune_notes.md`).
-- Use a Markdown viewer (e.g., VS Code, GitHub, or a web browser with a Markdown plugin) to render it with clickable links.
-- The index links work in any Markdown-compatible environment that supports anchor navigation.
+### Ways to create edge (relatonship)
+In **Gremlin** (used with Amazon Neptune), you can create an **edge (relationship)** using either:
 
-This version includes every detail from previous iterations, enhanced with a clickable index for easy navigation. Let me know if you need further adjustments!
+### ✅ **Vertex ID** (most direct way):
+
+You can use the known IDs of the source and target vertices:
+
+```gremlin
+g.V('1').addE('PLAYS_IN').to(g.V('2'))
+```
+
+- `g.V('1')` = source vertex by ID  
+- `addE('PLAYS_IN')` = creates an edge with label `'PLAYS_IN'`  
+- `to(g.V('2'))` = connects to target vertex by ID
+
+---
+
+### ✅ **Label + Property** (to *find* the correct vertex before linking):
+
+If you don’t know the ID, use label + property to match vertices:
+
+```gremlin
+g.V().hasLabel('Team').has('name', 'Arsenal')
+  .addE('PLAYS_IN')
+  .to(g.V().hasLabel('Stadium').has('name', 'Emirates'))
+```
+
+This:
+- Finds the `Team` node with name `"Arsenal"`
+- Creates an edge labeled `"PLAYS_IN"`
+- Connects it to the `Stadium` node with name `"Emirates"`
+
+---
+
+### 🔍 Summary:
+
+| Method             | Description                                      | Recommended Use                       |
+|--------------------|--------------------------------------------------|----------------------------------------|
+| **Using ID**        | `g.V('1').addE(...).to(g.V('2'))`               | When you already know vertex IDs       |
+| **Using Label+Props** | `g.V().hasLabel(...).has(...).addE(...)`       | When querying nodes based on data      |
+
+✅ **Both are valid** — labels help identify correct nodes; IDs are faster if you already have them.
