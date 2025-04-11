@@ -63,6 +63,27 @@
 ## 2. Graph Database Fundamentals
 
 ### 2.1 Core Components
+✅ **Nodes** (vertices) are like rows in SQL, and their **properties** are key-value pairs (key: columns, value:data/records) in SQL. Each property’s key is like a column name, and the value is the data/record for that column.
+Here’s the updated version with the information about labels and the example inline:
+
+- **SQL Table** is like a collection of rows (where each row holds data about an entity).
+  - For example, a Team table contains multiple records about different teams.
+- **Graph Database Nodes** are like individual entities (e.g., Team, Stadium, City) in the graph.
+  - **Team, Stadium, and City** can each have multiple nodes representing individual teams, stadiums, or cities.
+  - Each **SQL Row** is equivalent to a vertex (node).
+  - **SQL Columns** are equivalent to properties of a node (key-value pairs).
+- **Labels** in a graph database are used to categorize nodes (e.g., "Team", "Stadium", "City").
+  - In SQL, the table itself is like the label, identifying the type of entity.
+  - **Labels** can be used in queries to filter nodes of a particular type.
+  - Example in Gremlin:
+    ```gremlin
+    g.V().hasLabel('Team').values('name')
+    ```
+    This query will find all vertices (nodes) that have the label "Team" and return their name property.
+- **Edges** in a graph database represent relationships between nodes.
+  - For example, a relationship between a team and a stadium could be represented by an edge.
+  - In SQL, relationships are typically represented through foreign keys linking rows across different tables.
+    
 | **Component** | **Description**                        | **Example**                     |
 |---------------|----------------------------------------|---------------------------------|
 | **Node (Vertex)** | Represents an entity or object         | Team (Arsenal), Stadium (Anfield) |
