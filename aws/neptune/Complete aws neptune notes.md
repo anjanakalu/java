@@ -87,7 +87,7 @@ Here’s the updated version with the information about labels and the example i
 | **Component** | **Description**                        | **Example**                     |
 |---------------|----------------------------------------|---------------------------------|
 | **Node (Vertex)** | Represents an entity or object         | Team (Arsenal), Stadium (Anfield) |
-| **Edge**      | Defines a directed relationship        | Arsenal → STADIUM → The Emirates |
+| **Edge**      | Defines a directed relationship. `Edge(relationship)` can create using `Vertex ID` or `Label + Property`         | Arsenal → STADIUM → The Emirates |
 | **Label**     | Categorizes nodes or edges             | "Team", "Stadium", "CURRENT_LEAGUE" |
 | **Property**  | Key-value pairs for metadata           | `capacity: 60704`, `founded: 1886` |
 
