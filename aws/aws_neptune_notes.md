@@ -1,7 +1,3 @@
-Below is the complete set of notes in Markdown (`.md`) format, including all content from the previous versions and an **index** with clickable links that navigate to each section. This is designed for easy navigation and readability, especially for beginners learning AWS Neptune, Gremlin, and graph databases.
-
----
-
 # Comprehensive Beginner Notes on AWS Neptune, Gremlin, and Graph Databases
 
 ## Index
