@@ -1,3 +1,13 @@
+# Concept Comparison: SQL vs Gremlin (Graph DB)
+
+| **Concept**            | **SQL**                                      | **Gremlin (Graph DB)**                                    |
+|------------------------|----------------------------------------------|-----------------------------------------------------------|
+| **Table**              | A table stores records (rows).               | A vertex label represents a type of entity (e.g., "Team"). |
+| **Row**                | Each row represents one record in the table. | Each vertex represents an individual entity (e.g., one "Team"). |
+| **Column**             | Columns are defined fields (e.g., name, city). | Properties of a vertex represent attributes of the entity. |
+| **Properties (Key-Value Pairs)**| Column name and data values (e.g., name: "Chelsea", city: "London").| Properties on a vertex are key-value pairs where the key is like the column name in SQL, and the value is the actual data (e.g., `name: "Chelsea"`, `city: "London"`).|
+| **Primary Key (id)**  | Each row has a unique `id` field.            | Vertices have a unique ID or a specific property can serve as an ID (e.g., `property("id", "123")`). |
+| **Foreign Key**        | A foreign key links to a row in another table. | An edge connects one vertex to another, representing relationships (e.g., an edge from a "Team" to a "Stadium").|
 
 ## 🧮 1️⃣ SQL-style Table Structure with Foreign Key Annotations
 
