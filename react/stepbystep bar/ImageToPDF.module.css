@@ -1,0 +1,467 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+  }
+  
+  .header p {
+    color: #7f8c8d;
+    margin: 0;
+  }
+  
+  /* Steps indicator */
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e0e0e0;
+    z-index: 1;
+  }
+  
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+  }
+  
+  .step:not(:last-child) {
+    margin-right: 1rem;
+  }
+  
+  .stepNumber {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #7f8c8d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    border: 3px solid white;
+  }
+  
+  .stepLabel {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .step.active .stepNumber {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .step.active .stepLabel {
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  /* Upload Section */
+  .uploadSection {
+    margin-top: 2rem;
+  }
+  
+  .dropZone {
+    border: 2px dashed #bdc3c7;
+    border-radius: 8px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .dropZone.dragging {
+    border-color: #3498db;
+    background-color: #e8f4fc;
+  }
+  
+  .dropZoneContent {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .uploadIcon {
+    width: 48px;
+    height: 48px;
+    fill: #3498db;
+    margin-bottom: 1rem;
+  }
+  
+  .dropZone h3 {
+    margin: 0 0 0.5rem;
+    color: #2c3e50;
+  }
+  
+  .dropZone p {
+    margin: 0.5rem 0;
+    color: #7f8c8d;
+  }
+  
+  .browseButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 1rem 0;
+  }
+  
+  .browseButton:hover {
+    background-color: #2980b9;
+  }
+  
+  .supportedFormats {
+    font-size: 0.85rem;
+    color: #95a5a6;
+  }
+  
+  /* Options Section */
+  .optionsSection {
+    margin-top: 2rem;
+  }
+  
+  .previewAndOptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .imagePreview, .pdfOptions {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .imagePreview h3, .pdfOptions h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .imageList {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .imageItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .imageItem:last-child {
+    border-bottom: none;
+  }
+  
+  .imageInfo {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .imageName {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.25rem;
+  }
+  
+  .imageSize {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+  }
+  
+  .imageActions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .moveButton, .removeButton {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .moveButton:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .removeButton {
+    color: #e74c3c;
+    border-color: #e74c3c;
+  }
+  
+  .removeButton:hover {
+    background-color: #fdeaea;
+  }
+  
+  /* PDF Options */
+  .optionGroup {
+    margin-bottom: 1.5rem;
+  }
+  
+  .optionGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .optionGroup select, .optionGroup input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .optionGroup select:focus, .optionGroup input[type="text"]:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .radioGroup {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .radioGroup label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: normal;
+    cursor: pointer;
+  }
+  
+  /* Action Buttons */
+  .actionButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+  
+  .backButton, .convertButton {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .backButton {
+    background-color: white;
+    border: 1px solid #ddd;
+    color: #7f8c8d;
+  }
+  
+  .backButton:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .convertButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+  }
+  
+  .convertButton:hover {
+    background-color: #2980b9;
+  }
+  
+  .convertButton:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }
+  
+  /* Download Section */
+  .downloadSection {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .downloadContent {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .successIcon {
+    width: 64px;
+    height: 64px;
+    fill: #2ecc71;
+    margin-bottom: 1rem;
+  }
+  
+  .downloadContent h3 {
+    margin: 0 0 0.5rem;
+    color: #2c3e50;
+  }
+  
+  .downloadContent p {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+  }
+  
+  .downloadActions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .downloadButton, .previewButton {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  
+  .downloadButton {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+  }
+  
+  .downloadButton:hover {
+    background-color: #27ae60;
+  }
+  
+  .previewButton {
+    background-color: white;
+    border: 1px solid #3498db;
+    color: #3498db;
+  }
+  
+  .previewButton:hover {
+    background-color: #e8f4fc;
+  }
+  
+  .newConversionButton {
+    background: none;
+    border: none;
+    color: #3498db;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .newConversionButton:hover {
+    background-color: #e8f4fc;
+  }
+  
+  /* Error Message */
+  .errorMessage {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #fdeaea;
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+  
+  .errorIcon {
+    width: 24px;
+    height: 24px;
+    fill: #e74c3c;
+  }
+  
+  .errorMessage p {
+    margin: 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .previewAndOptions {
+      grid-template-columns: 1fr;
+    }
+    
+    .downloadActions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .downloadButton, .previewButton {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .steps {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .steps::before {
+      display: none;
+    }
+    
+    .step {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+    
+    .stepNumber {
+      margin-bottom: 0;
+    }
+  }
