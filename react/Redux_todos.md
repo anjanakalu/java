@@ -1,5 +1,120 @@
-### 1. Workflow (Step-by-Step Data Flow)
 
+### **Short Data Flow (Step-by-Step)**
+
+#### **1. UI Button Click Triggers Dispatch**
+```javascript
+// In AddTodo.js (Component)
+<button onClick={() => dispatch(addTodo("Read Book"))}>Add</button>
+```
+- **What Happens**:  
+  - User clicks button → `dispatch(addTodo(text))` is called.  
+  - `addTodo` is the **action creator**;  text: `"Read Book"` is the payload. It will create like `{type: ' payload: { id: Date.now(), text: text, completed: false}`
+
+---
+
+#### **2. Action Creator (todoActions.js)**
+```javascript
+// In todoActions.js
+export const addTodo = (text) => ({
+  type: 'ADD_TODO',                   // Action type (required)
+  payload: {                          // Payload (data)
+    id: Date.now(),
+    text: text,
+    completed: false
+  }
+});
+```
+- **What Happens**:  
+  - Action creator returns a **plain action object** with:  
+    - `type`: Describes the action (`ADD_TODO`).  
+    - `payload`: Contains the todo data (`text`, `id`, `completed`).  
+
+---
+
+#### **3. Reducer Processes Action (todoReducer.js)**
+```javascript
+// In todoReducer.js
+const initialState = [];
+
+const todoReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, action.payload]; // Immutable update
+    // ...other cases
+  }
+};
+```
+- **What Happens**:  
+  - Reducer checks `action.type` → matches `ADD_TODO`.  
+  - Returns **new state** by appending `action.payload` to the existing `state` (never modifies original state).  
+
+---
+
+#### **4. Root Reducer Combines Slices (reducers/index.js)**
+```javascript
+// In reducers/index.js
+import { combineReducers } from 'redux';
+import todos from './todoReducer'; // Imports the todoReducer
+
+const rootReducer = combineReducers({
+  todos: todos  // Key defines the state path (`state.todos`)
+});
+
+export default rootReducer;
+```
+- **What Happens**:  
+  - Combines all reducers (here, just `todoReducer` under the key `todos`).  
+  - The `todos` key determines how you access this slice in components (`state.todos`).  
+
+---
+
+#### **5. Store Receives Updated State (store.js)**
+```javascript
+// In store.js
+import { createStore } from 'redux';
+import rootReducer from './reducers'; // Imports combined reducer
+
+const store = createStore(rootReducer);
+```
+- **What Happens**:  
+  - Store receives the new state from the root reducer.  
+  - Notifies all subscribed components (e.g., `TodoList`) that `state.todos` changed.  
+
+---
+
+### **Key Takeaways**
+1. **Sequence is Unidirectional**:  
+   ```
+   UI → dispatch(action) → Action Creator → Reducer → Store → UI Update
+   ```
+2. **Immutability**:  
+   - Reducer **never** modifies state directly (e.g., no `state.push()`).  
+   - Always returns a **new object/array** (e.g., `[...state, newItem]`).  
+
+3. **Role of `combineReducers`**:  
+   - Merges reducers into a single state tree.  
+   - Example: If you added a `filterReducer`, the state would look like:  
+     ```javascript
+     {
+       todos: [...],       // From todoReducer
+       filters: {...}      // From filterReducer
+     }
+     ```
+
+4. **Component Access**:  
+   - Components read `state.todos` via `useSelector`:  
+     ```javascript
+     const todos = useSelector(state => state.todos); 
+     ```
+
+---
+
+
+### **Complete Data Flow (Step-by-Step)**
+
+### 1. Workflow (Step-by-Step Data Flow)
+UIButton Click(Dispatch Action obj)-> Action.js(creates action object with type and payload) -> todoReducer.js(Based on types returns state/data) -> combines theses all reducers(index.js) -> combinedreducers imported to store.js
+onclick: dispatch(addTodo(text)): addTodo is ActionCreator, and text is payload
 #### 1.1 Adding a Todo
 1. User submits form in AddTodo.js  
 2. `dispatch(addTodo(text))` called in AddTodo.js  
