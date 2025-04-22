@@ -422,7 +422,7 @@ const App = () => {
 export default App;
 ```
 
-## Part 3: Classic Implementation (connect) Redux data flow (Simplified)
+## Part 3: Classic Implementation (connect HOC Pattern) Redux data flow (Simplified)
 **using `connect`, `mapStateToProps`, and `mapDispatchToProps` (the classic Redux pattern)**
 - Only 2 files are changed (Changed on component file only)
 - `mapStateToProps` is like `useSelector` and mapDispatchToProps is like `dispatch(_action_creators)`
