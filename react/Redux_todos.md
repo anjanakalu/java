@@ -1,5 +1,5 @@
-
-### 1. **Short Redux Data Flow (Step-by-Step)**
+## Redux Data Flow Guide:
+### Part 1: Core Redux Flow (Simplified)
 
 #### **1. UI Button Click Triggers Dispatch**
 ```javascript
@@ -110,7 +110,7 @@ const store = createStore(rootReducer);
 ---
 
 
-### 1.1 **Complete Data Flow (Step-by-Step)**
+### Part 2: Detailed Redux Flow with Complete code implementation
 
 ### 1. Workflow (Step-by-Step Data Flow)
 UIButton Click(Dispatch Action obj)-> Action.js(creates action object with type and payload) -> todoReducer.js(Based on types returns state/data) -> combines theses all reducers(index.js) -> combinedreducers imported to store.js
@@ -159,8 +159,6 @@ onclick: dispatch(addTodo(text)): addTodo is ActionCreator, and text is payload
   - The component re-renders when the Redux state changes
 
 ---
-
-### 1.2. Complete Code Implementation
 
 #### 2.1 Action Creators (todoActions.js)
 **What it does:**  
@@ -424,7 +422,8 @@ const App = () => {
 export default App;
 ```
 
-## 2. Redux data flow using `connect`, `mapStateToProps`, and `mapDispatchToProps` (the classic Redux pattern)
+## Part 3: Classic Implementation (connect) Redux data flow (Simplified)
+**using `connect`, `mapStateToProps`, and `mapDispatchToProps` (the classic Redux pattern)**
 - Only 2 files are changed (Changed on component file only)
 - `mapStateToProps` is like `useSelector` and mapDispatchToProps is like `dispatch(_action_creators)`
 - **AddTodo.js** (uses connect props destructuring.)
@@ -477,7 +476,7 @@ export default connect(null, { addTodo })(AddTodo);
 3. Clicking the button triggers `props.addTodo("Read Book")`, which dispatches the `ADD_TODO` action.
 
 ---
-
+## Part 4: Detailed Classic Implementation (connect) Redux data flow
 ## Complete Code
 ### 1. UI Button Click Triggers Dispatch (Functional Component)
 ```jsx
