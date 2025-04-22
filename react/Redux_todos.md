@@ -1,5 +1,5 @@
 
-### **Short Data Flow (Step-by-Step)**
+### 1. **Short Redux Data Flow (Step-by-Step)**
 
 #### **1. UI Button Click Triggers Dispatch**
 ```javascript
@@ -110,7 +110,7 @@ const store = createStore(rootReducer);
 ---
 
 
-### **Complete Data Flow (Step-by-Step)**
+### 1.1 **Complete Data Flow (Step-by-Step)**
 
 ### 1. Workflow (Step-by-Step Data Flow)
 UIButton Click(Dispatch Action obj)-> Action.js(creates action object with type and payload) -> todoReducer.js(Based on types returns state/data) -> combines theses all reducers(index.js) -> combinedreducers imported to store.js
@@ -160,7 +160,7 @@ onclick: dispatch(addTodo(text)): addTodo is ActionCreator, and text is payload
 
 ---
 
-### 2. Complete Code Implementation
+### 1.2. Complete Code Implementation
 
 #### 2.1 Action Creators (todoActions.js)
 **What it does:**  
@@ -423,3 +423,212 @@ const App = () => {
 
 export default App;
 ```
+
+## 2. Redux data flow using `connect`, `mapStateToProps`, and `mapDispatchToProps` (the classic Redux pattern)
+- Only 2 files are changed (Changed on component file only)
+- `mapStateToProps` is like `useSelector` and mapDispatchToProps is like `dispatch(_action_creators)`
+- **AddTodo.js** (uses connect props destructuring.)
+- **TodoList.js** (Uses `mapStateToProps` with connect)
+
+#### **How connect Works**
+1. **`connect` Syntax**  
+   ```jsx
+   export default connect(
+     mapStateToProps,   // (Optional) Maps Redux state → props (// Maps Redux state `state.todos`, Passed as `props.todos` and component render it)
+     mapDispatchToProps // (Optional) Maps dispatch → props (//Binds action creators to `dispatch`, so they can be called directly from 'props`)
+   )(Component);
+   ```
+
+2. **`mapDispatchToProps` (Shortcut Syntax)**  
+   If you pass an **object of action creators** (like `{ addTodo }`), Redux automatically binds `dispatch` to them, so they become callable props:
+   ```jsx
+   export default connect(null, { addTodo })(AddTodo);
+   ```
+   - **Result:** `this.props.addTodo()` (class) or `props.addTodo()` (functional) is now a function that dispatches the action.
+
+3. **Equivalent Manual Binding (Long Form)**  
+   You could also write `mapDispatchToProps` as a function:
+   ```jsx
+   const mapDispatchToProps = (dispatch) => ({
+     addTodo: (text) => dispatch(addTodo(text)), // Explicit dispatch
+   });
+   ```
+   - **Same outcome**, but more verbose. The shorthand `{ addTodo }` does this automatically.
+
+---
+
+### **Example: Functional Component with `connect`**
+```jsx
+import { connect } from 'react-redux';
+import { addTodo } from './todoActions';
+
+const AddTodo = ({ addTodo }) => { // `addTodo` injected as prop
+  return (
+    <button onClick={() => addTodo("Read Book")}>Add</button>
+  );
+};
+
+export default connect(null, { addTodo })(AddTodo);
+```
+
+#### **What Happens Here?**
+1. `connect` takes `{ addTodo }` and binds it to `dispatch`.  
+2. The component receives `addTodo` as a **prop** that dispatches the action when called.  
+3. Clicking the button triggers `props.addTodo("Read Book")`, which dispatches the `ADD_TODO` action.
+
+---
+
+## Complete Code
+### 1. UI Button Click Triggers Dispatch (Functional Component)
+```jsx
+// AddTodo.js
+import { connect } from 'react-redux';
+import { addTodo } from './todoActions';
+
+const AddTodo = ({ addTodo }) => {
+  return (
+    <button onClick={() => addTodo("Read Book")}>Add</button>
+  );
+};
+
+// Shorthand mapDispatchToProps (object syntax)
+export default connect(null, { addTodo })(AddTodo);
+```
+
+**What Happens:**  
+- User clicks button → `addTodo("Read Book")` dispatches the action.  
+- `addTodo` is injected as a prop via `connect`.  
+
+---
+
+### 2. Action Creator (Unchanged)
+```javascript
+// todoActions.js
+export const addTodo = (text) => ({
+  type: 'ADD_TODO',
+  payload: {
+    id: Date.now(),
+    text: text,
+    completed: false
+  }
+});
+```
+
+---
+
+### 3. Reducer (Unchanged)
+```javascript
+// todoReducer.js
+const initialState = [];
+
+const todoReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, action.payload]; // Immutable update
+    default:
+      return state;
+  }
+};
+```
+
+---
+
+### 4. Root Reducer (Unchanged)
+```javascript
+// reducers/index.js
+import { combineReducers } from 'redux';
+import todos from './todoReducer';
+
+const rootReducer = combineReducers({
+  todos, // State accessible via `state.todos`
+});
+
+export default rootReducer;
+```
+
+---
+
+### 5. Store Setup (Unchanged)
+```javascript
+// store.js
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+
+const store = createStore(rootReducer);
+
+export default store;
+```
+
+---
+
+### 6. Component Reads State via `mapStateToProps`
+```jsx
+// TodoList.js
+import { connect } from 'react-redux';
+
+const TodoList = ({ todos }) => {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  todos: state.todos // Maps `state.todos` to `props.todos`
+});
+
+export default connect(mapStateToProps)(TodoList);
+```
+
+**What Happens:**  
+- `mapStateToProps` subscribes to `state.todos`.  
+- When the store updates, `TodoList` re-renders with new `todos` prop.  
+
+---
+
+### Key Notes (Functional vs. Class Components)
+1. **No `this`**: Props are passed directly as arguments (`{ addTodo }`, `{ todos }`).  
+2. **Simpler Syntax**: No `render()` method; just return JSX.  
+3. **Same Redux Flow**:  
+   ```
+   UI → dispatch(action) → Reducer → Store → mapStateToProps → UI Update
+   ```  
+4. **`connect` Still Works**: Despite hooks (`useSelector`/`useDispatch`), `connect` is valid for functional components.  
+
+---
+
+### Alternative: Modern Redux with Hooks
+If you’re using React-Redux v7.1+, you can replace `connect` with hooks:  
+```jsx
+// TodoList.js (with hooks)
+import { useSelector } from 'react-redux';
+
+const TodoList = () => {
+  const todos = useSelector(state => state.todos); // Directly access state
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default TodoList;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
