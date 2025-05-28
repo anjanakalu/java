@@ -1,9 +1,11 @@
 ## Jest with code coverage (using `--coverage`)
 ### **How to Generate**
+
 Run with coverage:
 ```bash
-npm test -- --coverage
+npm test --coverage
 ```
+HTML Report: Open `coverage/lcov-report/index.html` for visuals:
 ---
 Here’s a clear breakdown of Jest coverage metrics in a table format:
 
