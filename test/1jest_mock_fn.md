@@ -284,7 +284,7 @@ test('validates input', () => {
 
 <a name="jestmock"></a>
 ## 4. `jest.mock()` - Module Mocking
-
+- Mocks are fake functions that allow you to test a code isolated from its dependencies
 <a name="jestmock-purpose"></a>
 ### Purpose and Use Cases
 `jest.mock()` replaces entire modules with mocks, useful for:
