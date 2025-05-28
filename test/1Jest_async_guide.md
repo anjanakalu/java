@@ -1,6 +1,6 @@
-https://medium.com/@navneetskahlon/how-to-test-asynchronous-code-with-jest-promises-and-async-await-5b38e60021e3
-https://spectralops.io/blog/jest-async-test-a-developers-tutorial/
-https://jestjs.io/docs/asynchronous
+- https://medium.com/@navneetskahlon/how-to-test-asynchronous-code-with-jest-promises-and-async-await-5b38e60021e3
+- https://spectralops.io/blog/jest-async-test-a-developers-tutorial
+- https://jestjs.io/docs/asynchronous
 
 # **Jest Testing Guide for Beginners: Asynchronous Code**  
 
