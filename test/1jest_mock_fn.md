@@ -1,5 +1,7 @@
 Best resources: https://medium.com/@rickhanlonii/understanding-jest-mocks-f0046c68e53c
 
+https://www.youtube.com/watch?v=IDjF6-s1hGk&ab_channel=SamMeech-Ward
+
 # Comprehensive Jest Mocking Guide: `jest.fn()`, `jest.spyOn()`, and `jest.mock()`
 
 Jest provides powerful mocking tools to isolate code during testing. This guide covers the three primary mocking methods: `jest.fn()`, `jest.spyOn()`, and `jest.mock()`, detailing their purposes, arguments, return values, and best practices.
