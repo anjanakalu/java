@@ -278,6 +278,7 @@ const employees = [
 6. Create a list of items.
 7. Implement form validation and submission.
 8. Implement todo app functionality.
+9. When onclick, navigate to next page ie. using useNavigate, Link
 
 ---
 
